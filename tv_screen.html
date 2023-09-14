@@ -1,0 +1,502 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>ウレトルクイズTV画面</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="reset.css">
+</head>
+
+<body>
+    <!-- ⭐️スタンプ表示エリア -->
+    <div class="overlay"
+        style="position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; background-color: green;">
+        <canvas id="overlay" style="position: absolute; top: 0; left: 0; z-index: 3;"></canvas>
+    </div>
+
+    <!-- 左下のA_Groupのパーセンテージ表示 -->
+    <div id="AGroupPercentage" class="text-with-edge" style="font-size: 100px; position: absolute; bottom: 0; left: 0;">
+    </div>
+
+    <!-- 左下のA_Groupの個数表示 -->
+    <div id="AGroupCount" class="stampCount" style="font-size: 20px; position: absolute; bottom: 0; left: 0;z-index: 5">
+    </div>
+
+    <!-- 右側のB_Groupのパーセンテージ表示 -->
+    <div id="BGroupPercentage" class="text-with-edge"
+        style="font-size: 100px; position: absolute; bottom: 0; right: 0;"></div>
+    </div>
+    <!-- 右下のA_Groupの個数表示 -->
+    <div id="BGroupCount" class="stampCount"
+        style="font-size: 20px; position: absolute; bottom: 0; right: 0;z-index: 5">
+    </div>
+
+    <script>
+        //----------------------------------------
+        // クリックされたスタンプのURLを格納する配列
+        //----------------------------------------
+        let clickStamp = "";
+        const clickStamps = [];
+        const canvas = document.getElementById('overlay');
+        const ctx = canvas.getContext('2d');
+        const stamps = []; // スタンプの情報を保持する配列
+
+
+        //----------------------------------------
+        // ▼キャンバスサイズを設定
+        //----------------------------------------
+
+        // 初期サイズ設定
+        updateCanvasSize();
+
+        // ウィンドウのリサイズイベントを監視
+        window.addEventListener('resize', updateCanvasSize);
+
+        // キャンバスサイズをウィンドウの大きさに合わせて設定
+        function updateCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            // console.log(canvas.width, canvas.height)
+        };
+        //----------------------------------------
+        // データ取得処理(データベース上でデータの変更が発生したタイミングで {} 内の処理を実行)
+        //----------------------------------------
+
+
+        // const data = [{ "stickers": "a1", "count(*)": "3" }, { "stickers": "a2", "count(*)": "7" }, { "stickers": "a3", "count(*)": "8" }, { "stickers": "b1", "count(*)": "9" }, { "stickers": "b2", "count(*)": "7" }, { "stickers": "b3", "count(*)": "5" }]
+        /*
+        const data = [
+            {
+                "stickers": "a1",
+                "count(*)": "3",
+                "url": "./img/a.png"
+            },
+            {
+                "stickers": "a2",
+                "count(*)": "7",
+                "url": "./img/b.png"
+            },
+            {
+                "stickers": "a3",
+                "count(*)": "8",
+                "url": "./img/c.png"
+            },
+            {
+                "stickers": "b1",
+                "count(*)": "9",
+                "url": "./img/gu.png"
+            },
+            {
+                "stickers": "b2",
+                "count(*)": "7",
+                "url": "./img/choki.png"
+            },
+            {
+                "stickers": "b3",
+                "count(*)": "5",
+                "url": "./img/par.png"
+            },
+        ];
+        */
+        // const dataImages = [
+        //     {
+        //         "url": "./img/a.png"
+        //     },
+        //     {
+        //         "url": "./img/b.png"
+        //     },
+        //     {
+        //         "url": "./img/c.png"
+        //     },
+        //     {
+        //         "url": "./img/gu.png"
+        //     },
+        //     {
+        //         "url": "./img/choki.png"
+        //     },
+        //     {
+        //         "url": "./img/par.png"
+        //     },
+        // ];
+
+        //----------------------------------------
+        // ▼スタンプと画像を紐づける関数
+        //----------------------------------------
+
+        function getURLFromSticker(sticker) {
+            const mappings = {
+                'a1': './img/a.png',
+                'a2': './img/b.png',
+                'a3': './img/c.png',
+                'a4': './img/d.png',
+                'a5': './img/e.png',
+                'a6': './img/gu.png',
+                'a7': './img/choki.png',
+                'a8': './img/par.png',
+                'b1': './img/e.png',
+                'b2': './img/f.png',
+                'b3': './img/g.png',
+                'b4': './img/h.png',
+                'b5': './img/rain.png',
+                'b6': './img/sunny.png',
+                'b7': './img/sunny_cloudy.png',
+                'b8': './img/snow.png'
+            };
+
+            return mappings[sticker] || '';  // マッピングが存在しない場合は空の文字列を返す
+        }
+
+        let AGroupCount = 0;
+        let BGroupCount = 0;
+        let AGroupPercentage;
+        let BGroupPercentage;
+
+        let previousData = [];
+
+        const getStickersCounter = async () => {
+            await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersResults.php")
+                .then((response) => response.json())
+                .then((data) => {
+
+
+            // 増えたスタンプの配列
+            const increasedData = [];
+
+            data.forEach((currentData, index) => {
+                if (previousData.length > index) {
+                    const diff = parseInt(currentData['count(*)']) - parseInt(previousData[index]['count(*)']);
+                    if (diff > 0) {
+                        increasedData.push({
+                            stickers: currentData.stickers,
+                            increaseCount: diff
+                        });
+                    }
+                } else {
+                    // 前回のデータに存在しなかったstickerは全て新しいとみなす
+                    increasedData.push({
+                        stickers: currentData.stickers,
+                        increaseCount: parseInt(currentData['count(*)'])
+                    });
+                }
+            });
+
+            // 新しいデータを前回のデータとして保存
+            previousData = data;
+
+            console.log("increasedData",increasedData); // 増加したスティッカーの情報
+
+            // 非同期処理が成功した場合
+            const code = increasedData[0].Code;
+            // console.log("data",data);            
+            
+            for (let i = 0; i < increasedData.length; i++) {
+                    const selectedItem = increasedData[i];
+                    const stampType = selectedItem.stickers;
+                    // const clickStamp = dataImages[i].url;
+                    const clickStamp = getURLFromSticker(selectedItem.stickers);
+            
+                if (['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'].includes(stampType)) {
+                    AGroupCount += 1;
+                } else if (['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8'].includes(stampType)) {
+                    BGroupCount += 1;
+                }
+
+                if (code === 3) {
+
+                } else {
+                    const jsonData = increasedData;
+                    // console.log(jsonData);
+                    drawImageOnCanvas(clickStamp, stampType);
+                    calculatePercentage(AGroupCount, BGroupCount);
+                    drawBarGraph(AGroupPercentage, BGroupPercentage);
+                    // console.log(clickStamp, AGroupPercentage)
+                    // JSONデータ取得確認処理 ↓↓↓ 削除
+                    // const jsonDataString = JSON.stringify(jsonData);
+                    // const divObj = document.querySelector('div');
+                    // divObj.textContent = jsonDataString;
+                }
+            }
+            })
+            .catch((error) => {
+                // 非同期処理が失敗した場合
+            })
+            // ここでdataを処理する
+        }
+        setInterval(() => {
+            getStickersCounter();
+        }, 1000);
+
+
+        function calculatePercentage() {
+            // console.log("AGroupCount", AGroupCount, "BGroupCount", BGroupCount)
+            let isFirstCall = true;
+
+            // パーセンテージの計算
+            const total = AGroupCount + BGroupCount;
+            // console.log(total)
+            AGroupPercentage = Math.round((AGroupCount / total) * 100); // 小数点を丸める
+            BGroupPercentage = 100 - AGroupPercentage;
+
+            // HTML要素にパーセンテージを表示
+
+            document.getElementById("AGroupPercentage").innerHTML = `${AGroupPercentage}<span class="small-percentage">%</span>`;
+            document.getElementById("AGroupCount").innerHTML = `${AGroupCount}`;
+            document.getElementById("BGroupPercentage").innerHTML = `${BGroupPercentage}<span class="small-percentage">%</span>`;
+            document.getElementById("BGroupCount").innerHTML = `${BGroupCount}`;
+        }
+        // drawImageOnCanvas(clickStamp);
+        // drawBarGraph(AGroupPercentage, BGroupPercentage);
+        // console.log(clickStamp, AGroupPercentage)
+
+
+
+        //----------------------------------------
+        // ▼スタンプ描画関数
+        //----------------------------------------
+        let isAnimationRunning = false;
+
+        const GRAVITY = 0.03; // 重力の強さ
+        const FRICTION = 0.3; // 摩擦係数
+        // const CONSTANT_VELOCITY = 5;
+
+        // clickStampが更新されたら描画するための関数
+        function drawImageOnCanvas(stampURL, stampType) {
+
+            const image = document.createElement('img');
+            image.className = "stampMoving";
+            image.onload = function () {
+                //----------------------------------------
+                // ▼aかbかを振り分ける
+                //----------------------------------------
+                let startX;
+                if (['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'].includes(stampType)) {
+                    startX = startX = Math.random() * 180;
+
+                } else if (['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8'].includes(stampType)) {
+                    startX = canvas.width - 230 + Math.random() * 180;
+                }
+                //----------------------------------------
+                // ▼基本パラメータを設定して、オブジェクトを作成
+                //----------------------------------------
+
+                const stampInfo = {
+                    image: image,
+                    posX: startX,
+                    posY: -100,
+                    velocityX: 0,
+                    initialVelocityY: 0.7 + Math.random() * 3,
+                    velocityY: 0.5 + Math.random(),
+                    size: 100,
+                    isAnimating: true,
+                    opacity: 1.0,
+                };
+                // console.log("stampInfo", stampInfo);
+                stamps.push(stampInfo);
+                // console.log(stamps.length)
+
+                // アニメーションを開始
+                if (!isAnimationRunning) {
+                    isAnimationRunning = true;
+                    animate();
+                    // console.log(stamps.length)
+                }
+            };
+            image.src = stampURL; // clickStampsに画像のURLを格納
+        };
+
+        //----------------------------------------
+        // スタンプの距離を測る関数
+        //----------------------------------------
+
+        function areStampsColliding(stamp1, stamp2) {
+            const dx = stamp1.posX - stamp2.posX;
+            const dy = stamp1.posY - stamp2.posY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            return distance < (stamp1.size + stamp2.size) / 2;
+        };
+
+        //----------------------------------------
+        // キャンバスの中央から左右100pxの範囲の境界を定義
+        //----------------------------------------
+        const leftBoundary = canvas.width / 2 - canvas.width / 4;
+        const rightBoundary = canvas.width / 2 + canvas.width / 5;;
+        console.log(leftBoundary, rightBoundary)
+
+
+        //----------------------------------------
+        // ▼アニメーション全体の関数
+        //----------------------------------------
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Canvasをクリア
+            drawBarGraph(AGroupPercentage, BGroupPercentage); // ここでグラフを再描画
+            // console.log(AGroupPercentage, BGroupPercentage)
+
+            // ctx.fillStyle = 'lightgreen';
+            // 指定された範囲に長方形を描画します。
+            // ctx.fillRect(leftBoundary, 0, rightBoundary - leftBoundary, canvas.height);
+
+            for (let i = 0; i < stamps.length; i++) {
+                // 画面の半分に来たら重ならないようにする
+                if (stamps[i].posY > canvas.height / 2) {
+
+                    //----------------------------------------
+                    // ▼スタンプの衝突関数
+                    //----------------------------------------
+                    for (let j = i + 1; j < stamps.length; j++) {
+                        if (areStampsColliding(stamps[i], stamps[j])) {
+
+                            // スタンプが重ならないように位置を調整
+                            const dx = stamps[j].posX - stamps[i].posX;
+                            const dy = stamps[j].posY - stamps[i].posY;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            const overlap = (stamps[i].size / 2 + stamps[j].size / 2) - distance;
+
+                            // 重なっている距離に基づいて位置を調整
+                            const adjustX = (dx / distance) * overlap;
+                            const adjustY = (dy / distance) * overlap;
+
+                            // 位置を調整
+                            const margin = 10;
+                            stamps[i].posX -= adjustX / margin;
+                            stamps[i].posY -= adjustY / margin;
+                            stamps[j].posX += adjustX / margin;
+                            stamps[j].posY += adjustY / margin;
+                        }
+                    }
+                }
+
+                //----------------------------------------
+                // ▼スタンプが中央に寄らないようにする関数
+                //----------------------------------------
+                if (stamps[i].posX > leftBoundary && stamps[i].posX < rightBoundary) {
+                    //     スタンプの水平速度を反転
+                    stamps[i].velocityX = -stamps[i].velocityX;
+
+                    if (Math.abs(stamps[i].posX - leftBoundary) < Math.abs(stamps[i].posX - rightBoundary)) {
+                        stamps[i].posX = leftBoundary;  // leftBoundaryにはりつく
+                    } else {
+                        stamps[i].posX = rightBoundary; // rightBoundaryにはりつく
+                    }
+
+
+                    //     if (stamps[i].posX = leftBoundary) {
+                    //         stamps[i].posX = leftBoundary;
+                    //     } else if (stamps[i].posX > rightBoundary) {
+                    //         stamps[i].posX = rightBoundary / 2;
+                    //     }
+                }
+
+                //----------------------------------------
+                // ▼アニメーションの関数
+                //----------------------------------------
+                const stamp = stamps[i];
+                // console.log(stamps.length)
+                const newStampSize = stamp.size * 0.5; // スタンプのサイズ
+
+                if (stamp.isAnimating) {
+                    stamp.posX += stamp.velocityX;
+
+                    // 画面の半分までの場合
+                    if (stamp.posY <= canvas.height / 2) {
+                        // 速度を一定に保つ（適切な一定の速度を設定する）
+                        stamp.velocityY = stamp.initialVelocityY;
+                    } else {
+                        // 画面の半分を超えた場合、重力の影響を受けて加速する
+                        stamp.velocityY += (1 + GRAVITY);
+                    }
+                    stamp.posY += stamp.velocityY;
+                    // stamp.posY += stamp.velocityY;
+                    // console.log([i], "個目がアニメーション中", stamps[i].velocityY)
+
+                    if (stamp.posY + newStampSize > canvas.height) {
+                        stamp.posY = canvas.height - newStampSize;  // スタンプの位置をcanvasの下端に固定
+
+                        // 跳ね返る時に摩擦の影響を受ける
+                        stamp.velocityY = -stamp.velocityY * FRICTION;
+
+                        // 速度が非常に小さい場合、ボールを止める
+
+                        if (Math.abs(stamp.velocityY) < 0.5) {
+                            stamp.velocityY = 0;
+                            stamp.opacity -= 0.1;
+                            setTimeout(() => {
+                                stamp.isAnimating = false;
+                            }, 1000);
+
+                        }
+                        ctx.globalAlpha = stamp.opacity; // 透明度の設定
+                        ctx.globalAlpha = 1.0;
+                    }
+
+                    // スタンプを描画
+                    const visibleHeight = stamp.size - (stamp.posY < 0 ? -stamp.posY : 0);  // 画面外にはみ出している部分の高さ
+                    ctx.drawImage(
+                        stamp.image,
+                        0,
+                        stamp.size - visibleHeight,
+                        stamp.size, // ソース画像の幅
+                        visibleHeight, // ソース画像の高さ
+                        stamp.posX,
+                        stamp.posY < 0 ? 0 : stamp.posY,
+                        newStampSize, // 宛先キャンバス上の幅
+                        newStampSize * (visibleHeight / stamp.size) // 宛先キャンバス上の高さ
+                    );
+                };
+            };
+            // console.log("テストdrawBarGraph")
+            if (stamps.length > 0) {
+                requestAnimationFrame(animate);
+            }
+        };
+
+        //----------------------------------------
+        // ▼棒グラフの描画関数
+        //----------------------------------------
+
+        let currentAGroupHeight = 0;
+        let currentBGroupHeight = 0;
+        const lerpRate = 0.05;  // 補完率。0.05のような小さい値でスムーズな変化を得る
+        let isFirstDraw = true;
+
+        function drawBarGraph(AGroupPercentage, BGroupPercentage) {
+
+            const barWidth = 200;
+            const barX1 = 0;
+            const barX2 = canvas.width - barWidth;
+
+            const maxCanvasPercentage = 0.5;  // これはcanvas.heightの50%を意味します。
+            const targetAGroupHeight = calculateBarHeight(AGroupPercentage, maxCanvasPercentage, canvas.height);
+            const targetBGroupHeight = calculateBarHeight(BGroupPercentage, maxCanvasPercentage, canvas.height);
+            // console.log(currentAGroupHeight);
+
+            // 現在の高さを目標の高さに近づける
+            if (isFirstDraw) {
+                currentAGroupHeight = targetAGroupHeight;
+                currentBGroupHeight = targetBGroupHeight;
+                isFirstDraw = false;
+            } else {
+                currentAGroupHeight += (targetAGroupHeight - currentAGroupHeight) * lerpRate;
+                currentBGroupHeight += (targetBGroupHeight - currentBGroupHeight) * lerpRate;
+            }
+
+            ctx.fillStyle = "#cc0000";
+            ctx.fillRect(barX1, canvas.height, barWidth, -currentAGroupHeight);
+            // console.log(barX1, canvas.height, barWidth, -currentAGroupHeight);
+
+            ctx.fillStyle = '#0000cc';
+            ctx.fillRect(barX2, canvas.height, barWidth, -currentBGroupHeight);
+        };
+
+        function calculateBarHeight(percentage, maxCanvasPercentage, canvasHeight) {
+            return (percentage / 100) * maxCanvasPercentage * canvasHeight;
+        }
+    </script>
+
+</body>
+
+</html>

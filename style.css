@@ -1,0 +1,214 @@
+::-webkit-scrollbar {
+    /* スクロールバー外し */
+    display: none;
+}
+
+body {
+    height: auto;
+    background-repeat: no-repeat;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+
+/************************** 
+ユーザー画面 CSSエリア
+***************************/
+
+
+#stampWrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+
+/*真ん中の縦の線を表すスタイル */
+#stampWrapper:after {
+    content: "";
+    position: absolute;
+    top: 5%;
+    bottom: 5%;
+    left: 50%;
+    /* 線の幅 */
+    width: 0.5px;
+    /* 線の色 */
+    background-color: gray;
+    /* 中央に配置 */
+    transform: translateX(-50%);
+}
+
+.stampContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 400px;
+}
+
+/*スタンプは４つづつ並べる */
+.stampContainer:after {
+    content: "";
+    width: 90px;
+    height: 0px;
+}
+
+.stampContainer:before {
+    content: "";
+    width: 90px;
+    height: 0px;
+    order: 1;
+}
+
+.image-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.image {
+    width: 75px;
+    height: 75px;
+    margin: 10px 10px 0px 10px;
+    /* アニメーションの時間を調整 */
+    animation-duration: 0.5s;
+    /* タイミング関数を指定 */
+    animation-timing-function: ease;
+    /* アニメーションの繰り返し回数を指定 */
+    animation-iteration-count: 1;
+    /* アニメーション完了後に最終スタイルを保持 */
+    animation-fill-mode: forwards;
+    /* デフォルトの透明度 */
+    opacity: 1;
+    /* 透明度の変更をアニメーションする */
+    transition: opacity 1s;
+
+}
+
+/* スタンプがクリックされたときのアニメーション */
+.clicked-image {
+    /* アニメーション名を指定 */
+    animation-name: bounceAndExit;
+    /* アニメーションの時間を調整 */
+    animation-duration: 0.5s;
+    /* タイミング関数を指定 */
+    animation-timing-function: ease;
+    /* アニメーションの繰り返し回数を指定 */
+    animation-iteration-count: 1;
+    /* アニメーション完了後に最終スタイルを保持 */
+    animation-fill-mode: forwards;
+    /* 透明度を指定するためのクラス */
+    opacity: 0.5;
+}
+
+/* スタンプが跳ねるアニメーションのキーフレーム */
+@keyframes bounceAndExit {
+
+    0%,
+    20% {
+        transform: translateY(0);
+        /* Y軸方向に移動しない */
+    }
+
+    30% {
+        transform: translateY(10px);
+        /* Y軸方向に10px移動 */
+    }
+
+    50% {
+        transform: translateY(20px);
+        /* Y軸方向に20px移動 */
+    }
+
+    60% {
+        transform: translateY(10px);
+        /* Y軸方向に10px移動 */
+    }
+
+    100% {
+        transform: translateY(-100vh);
+        /* Y軸方向に画面の高さ分 (-100vh) 移動 */
+    }
+}
+
+/* 透明度を指定するためのクラス */
+.never-clickable {
+    opacity: 0.3;
+    pointer-events: none;
+    transition: opacity 0.5s;
+}
+
+/************************** 
+ウレトルクイズ テレビ画面
+***************************/
+
+.bar-container {
+    display: flex;
+    /* 棒グラフの下から開始 */
+    align-items: flex-end;
+
+}
+
+.bar {
+    /* 2つの棒グラフなので、50%ずつの幅 */
+    width: 50%;
+    /* 棒グラフの色 */
+    background-color: #3498db;
+    /* アニメーションの効果 */
+    transition: height 0.5s;
+
+}
+
+/* Bグループの棒グラフの色 */
+#BGroupBar {
+    background-color: #e74c3c;
+
+}
+
+.overlay {
+    -ms-overflow-style: none;
+}
+
+#AGroupPercentage {
+    color: white;
+    vertical-align: bottom;
+    right: calc(100% + -30px);
+    transform: translateX(100%);
+    font-weight: bold;
+    letter-spacing: -5px;
+    z-index: 4;
+}
+
+
+#BGroupPercentage {
+    color: white;
+    vertical-align: bottom;
+    left: calc(100% - 90px);
+    transform: translateX(-120%);
+    font-weight: bold;
+    letter-spacing: -4px;
+    z-index: 4;
+}
+
+.small-percentage {
+    font-size: 40%;
+    font-weight: 700;
+}
+
+#AGroupCount {
+    color: white;
+    vertical-align: bottom;
+    right: calc(100% + -30px);
+    transform: translateX(100%);
+    font-weight: bold;
+    letter-spacing: 0px;
+}
+
+#BGroupCount {
+    color: white;
+    vertical-align: bottom;
+    left: calc(100% - 90px);
+    transform: translateX(-120%);
+    font-weight: bold;
+    letter-spacing: 0px;
+}
