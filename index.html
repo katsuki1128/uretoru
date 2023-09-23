@@ -207,7 +207,7 @@
                 //     .then((data) => {
                 //         const status = data[0].Code;
 
-                status = 1;
+                status = 2;
 
                 switch (status) {
                     case 1:
@@ -400,7 +400,7 @@
         const resetIcon = document.getElementById('reset');
 
         // クリックイベントリスナーを追加
-        resetIcon.addEventListener('change', function () {
+        resetIcon.addEventListener('click', function () {
             // LocalStorageの値をリセット
             localStorage.removeItem('imageClickCount');
 
