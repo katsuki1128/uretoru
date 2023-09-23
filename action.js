@@ -35,7 +35,7 @@ const executeActionsForStatus1 = () => {
                 <div class="text-center text-sm mx-0 my-0">
                     <label for="toggle" class="flex items-center justify-between w-full cursor-pointer">
                         <!-- ラベルテキスト -->
-                        <div class="ml-0 text-gray-700 font-medium">
+                        <div class="ml-0 text-gray-700 text-sm"">
                             ⭐️ 音声をONにすればボイスも楽しめます
                         </div>
                         <!-- トグルボタン本体 -->
