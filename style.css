@@ -152,13 +152,6 @@ body {
     pointer-events: none; /* クリックを無効にする場合 */
 }
 
-.disabled-toggle-label {
-    opacity: 0.6; 
-    pointer-events: none; /* クリックやタッチ操作を無効にする */
-}
-
-
-
 
 /************************** 
 ウレトルクイズ テレビ画面
