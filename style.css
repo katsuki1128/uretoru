@@ -68,31 +68,20 @@ body {
     width: 75px;
     height: 75px;
     margin: 10px 10px 0px 10px;
-       /* フェードインアニメーションを適用 */
-       animation-name: fadeInImage;
-       /* アニメーションの時間を調整 */
-       animation-duration: 0.5s;
-       /* タイミング関数を指定 */
-       animation-timing-function: ease;
-       /* アニメーションの繰り返し回数を指定 */
-       animation-iteration-count: 1;
-       /* アニメーション完了後に最終スタイルを保持 */
-       animation-fill-mode: forwards;
-   
-   }
-   
-   /* 画像がフェードインするアニメーションのキーフレーム */
-   @keyframes fadeInImage {
-       0% {
-           opacity: 0;
-           /* 初期状態で透明 */
-       }
-   
-       100% {
-           opacity: 1;
-           /* 終了時に完全に表示 */
-       }
-   }
+    /* アニメーションの時間を調整 */
+    animation-duration: 0.5s;
+    /* タイミング関数を指定 */
+    animation-timing-function: ease;
+    /* アニメーションの繰り返し回数を指定 */
+    animation-iteration-count: 1;
+    /* アニメーション完了後に最終スタイルを保持 */
+    animation-fill-mode: forwards;
+    /* デフォルトの透明度 */
+    opacity: 1;
+    /* 透明度の変更をアニメーションする */
+    transition: opacity 1s;
+
+}
 
 /* スタンプがクリックされたときのアニメーション */
 .clicked-image {
