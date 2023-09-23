@@ -191,7 +191,7 @@ window.onload = () => {
         //     .then((data) => {
         //         const status = data[0].Code;
 
-        status = 3;
+        status = 1;
 
         switch (status) {
             case 1:
