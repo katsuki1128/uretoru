@@ -80,9 +80,10 @@
     </div>
 
     <section class="bg-gray-200">
-        <div class="flex flex-col items-center justify-center px-4 pt-4 pb-2 mx-auto">
+        <div class="flex flex-col items-center justify-center px-2 pt-2 pb-2 mx-auto">
             <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
                 <div class="text-center text-sm ml-1 my-2 mr-2">
+
                     <label class="flex items-center justify-between w-full cursor-pointer">
                         <!-- ラベルテキスト -->
                         <div class="ml-3 text-gray-700 font-medium" id="stampCount">
@@ -95,6 +96,9 @@
                             <i class="fa-solid fa-rotate-right" id="reset"></i>
                         </div>
                     </label>
+                    <div class="text-lg mt-2 text-gray-700 font-medium" id="thanks">
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -289,7 +293,7 @@
 
             const audioPath = audioSet[id] || './img/default.mp3'; // idが存在しない場合のデフォルト音声
             const audio = new Audio(audioPath);
-            console.log(audio)
+            // console.log(audio)
             audio.play();
         };
 
@@ -343,7 +347,7 @@
             // 取得データ格納配列を生成
             const data = {};
             data.id = id;
-            console.log(id);
+            // console.log(id);
             // 配列をJSONデータに変換
             const jsonString = JSON.stringify(data);
             const jsonData = JSON.parse(jsonString);
@@ -355,13 +359,7 @@
             if (isSoundOn) {  // isSoundOnがtrueの場合のみ音声を再生
                 playSound(id);
             }
-            //----------------------------------------
-            // バイブレーションを起動
-            //----------------------------------------
 
-            if (window.navigator && window.navigator.vibrate) {
-                navigator.vibrate(200);// 200ミリ秒間のバイブレーションを設定
-            }
             //----------------------------------------
             // ▼LocalStorageにカウントを保存
             //----------------------------------------
@@ -373,13 +371,44 @@
                 } else {
                     currentCount = parseInt(currentCount); // 文字列として保存されているので、整数に変換
                 }
-                console.log(currentCount);
+                // console.log(currentCount);
 
                 // カウントを増やす
                 currentCount++;
 
                 // 新しいカウントをLocalStorageに保存
                 localStorage.setItem('imageClickCount', currentCount);
+
+                // メッセージの配列
+                const messages = [
+                    `${currentCount}回も送ってくれて、ありがとう！`,
+                    "参加してくれて嬉しいっちゃん！",
+                    "わーい！いい感じ！",
+                    `${currentCount}回送ったよ！いい調子！`,
+                    "ご参加、応援ありがとー！！"
+                ];
+
+                // 1%の確率（50回に1回の平均）でtrueを返す
+                const shouldShowMessage = () => Math.random() < 0.1;
+
+                // カウントがメッセージを表示すべきかどうかを判断
+                if (shouldShowMessage()) {
+                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                    document.getElementById('thanks').innerText = randomMessage;
+
+                    // メッセージ表示の回数を保存
+                    localStorage.setItem('lastMessageShownCount', currentCount);
+                    console.log("currentCount (message shown):", currentCount);
+                } else {
+                    const lastMessageShownCount = parseInt(localStorage.getItem('lastMessageShownCount') || "0");
+
+                    // メッセージが表示されてから5回以上クリックされた場合、メッセージを削除
+                    if (currentCount - lastMessageShownCount > 5) {
+                        document.getElementById('thanks').innerText = "";
+                    }
+                    console.log("currentCount:", currentCount);
+                }
+
 
                 // IDを使用して要素を選択して、カウントを表示
                 const stampCountDiv = document.getElementById('stampCount');
@@ -389,10 +418,9 @@
         };
 
         const displayStampCount = () => {
-            let currentCount = localStorage.getItem('imageClickCount');
-            if (currentCount === null) {
-                currentCount = "0"; // 初めての場合は0をセット
-            }
+            let currentCount = parseInt(localStorage.getItem('imageClickCount') || "0");
+
+
 
             const stampCountDiv = document.getElementById('stampCount');
             stampCountDiv.innerText = `スタンプを飛ばした数: ${currentCount}`;
@@ -434,6 +462,8 @@
             element.classList.remove('clicked-image'); // 一定時間経過後に 'clicked-image' クラスを削除
             isClickDisabled = false; // 一定時間後にクリックを再度有効にする
         };
+
+
 
         //----------------------------------------
         // サーバーと通信する関数
