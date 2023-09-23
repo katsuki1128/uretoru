@@ -469,7 +469,7 @@ const stickers = async (param, element) => {
             console.log('データ登録成功');
             setTimeout(() => {
                 removeClickedImageAndEnableClick(element);
-            }, 500);
+            }, 1000);
             break;
         case 2:
             console.log('データ登録失敗');
