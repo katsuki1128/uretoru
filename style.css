@@ -77,10 +77,9 @@ body {
     /* アニメーション完了後に最終スタイルを保持 */
     animation-fill-mode: forwards;
     /* デフォルトの透明度 */
-    opacity: 1;
+    /* opacity: 1; */
     /* 透明度の変更をアニメーションする */
     transition: opacity 1s;
-
 }
 
 /* スタンプがクリックされたときのアニメーション */

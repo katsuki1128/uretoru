@@ -25,10 +25,7 @@ const executeActionsForStatus1 = () => {
     targetDiv.innerHTML = `
                 <div class="text-left mb-1">
                     <p class="text-sm mb-2">
-                        ⭐️「A」か「B」を選択。※途中変更はできません
-                    </p>
-                    <p class="text-sm">
-                        ⭐️ 選択した側のスタンプを飛ばして応援しよう
+                        ⭐️「Aのマサル」か「Bの伊藤アナ」スタンプで参加しよう！途中変更できないから選択は慎重に！
                     </p>
                 </div>
 
@@ -80,17 +77,9 @@ const executeActionsForStatus1 = () => {
         <div class="flex flex-col items-center justify-center px-2 pt-2 pb-2 mx-auto">
             <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
                 <div class="text-center text-sm ml-1 my-2 mr-2">
-                    <label class="flex items-center justify-between w-full cursor-pointer">
-                        <div class="ml-3 text-gray-700 font-medium" id="stampCount">
-                            スタンプを飛ばした数：
-                        </div>
-                        <div class="relative mr-2">
-                            リセット
-                            <i class="fa-solid fa-rotate-right" id="reset"></i>
-                        </div>
-                    </label>
-                    <div class="text-lg mt-2 text-gray-700 font-medium" id="thanks">
 
+                    <div class="text-lg mt-2 text-gray-700 font-medium" id="thanks">
+                    ⛑ご参加ありがとうございます😊
                     </div>
                 </div>
             </div>
@@ -98,6 +87,15 @@ const executeActionsForStatus1 = () => {
         `;
 
 
+    // <label class="flex items-center justify-between w-full cursor-pointer">
+    //     <div class="ml-3 text-gray-700 font-medium" id="stampCount">
+    //         スタンプを飛ばした数：
+    //     </div>
+    //     <div class="relative mr-2">
+    //         リセット
+    //         <i class="fa-solid fa-rotate-right" id="reset"></i>
+    //     </div>
+    // </label>
     // 画面サイズの調整関連のロジックを実行
     window.addEventListener('resize', adjustImageWidth);
     adjustImageWidth();
@@ -108,7 +106,7 @@ const executeActionsForStatus1 = () => {
     // トグルのイベントリスナを追加
     addToggleEventListener();
 
-    displayStampCount();
+    // displayStampCount();
 
     resetClickCount();
 };
@@ -134,7 +132,7 @@ const executeActionsForStatus2 = () => {
             `;
 
     const targetDiv = document.getElementById('contentDiv');
-    targetDiv.innerHTML = '<p class="text-lg">⭐️次回の参加をお待ちしています⭐️</p>';
+    targetDiv.innerHTML = '<p class="text-lg">⭐️毎週金曜に開催しています⭐️<br>⭐️次回の参加をお待ちしています⭐️</p>';
 
     const stampWrapper = document.getElementById('stampWrapper');
     stampWrapper.innerHTML = `
@@ -292,6 +290,15 @@ const addToggleEventListener = () => {
 
 const handleClickOnImage = (element) => {
     //----------------------------------------
+    // ▼クリックされたスタンプのIDを取得する関数
+    //----------------------------------------
+    // クリックされた画像のデータ属性を取得
+    const id = element.dataset.id;
+    // 取得データ格納配列を生成
+    const data = {};
+    data.id = id;
+
+    //----------------------------------------
     // ▼一度クリックされたらクリック不可にする
     //----------------------------------------
     if (isClickDisabled) {
@@ -304,30 +311,21 @@ const handleClickOnImage = (element) => {
 
     element.classList.add('clicked-image'); // クリックされたら 'clicked-image' クラスを追加
     isClickDisabled = true; // クリックを無効化
+    let targetPrefix;
 
-    if (element.getAttribute('data-id').startsWith('a')) {
-        const bElements = document.querySelectorAll('[data-id^="b"]');
-        bElements.forEach((targetElement) => {
+    if (id.startsWith('a')) {
+        targetPrefix = 'b';
+    } else if (id.startsWith('b')) {
+        targetPrefix = 'a';
+    }
+
+    if (targetPrefix) {
+        const targetElements = document.querySelectorAll(`[data-id^="${targetPrefix}"]`);
+        targetElements.forEach((targetElement) => {
             targetElement.classList.add('never-clickable');
         });
     }
 
-    if (element.getAttribute('data-id').startsWith('b')) {
-        const aElements = document.querySelectorAll('[data-id^="a"]');
-        aElements.forEach((targetElement) => {
-            targetElement.classList.add('never-clickable');
-        });
-    }
-
-    //----------------------------------------
-    // ▼クリックされたスタンプのIDを取得する関数
-    //----------------------------------------
-    // クリックされた画像のデータ属性を取得
-    const id = element.dataset.id;
-    // 取得データ格納配列を生成
-    const data = {};
-    data.id = id;
-    // console.log(id);
     // 配列をJSONデータに変換
     const jsonString = JSON.stringify(data);
     const jsonData = JSON.parse(jsonString);
@@ -360,22 +358,32 @@ const handleClickOnImage = (element) => {
         localStorage.setItem('imageClickCount', currentCount);
 
         // メッセージの配列
-        const messages = [
-            `${currentCount}回も送ってくれて、ありがとう！`,
-            "参加してくれて嬉しいっちゃん！",
-            `わーい！いい感じ！${currentCount}個目！`,
-            `${currentCount}回送ったよ！いい調子！`,
-            "ご参加、応援ありがとー！！"
+        const aMessages = [
+            `${currentCount}回も送ってくれて、おいさんうれしか⛑！！`,
+            `今ので${currentCount}個目ばい⛑!嬉しか！`,
+            `おいさー⛑！いい感じ！${currentCount}個目！`,
+            `${currentCount}回送ってくれたばい⛑！`,
+            "応援ありがとさん⛑⛑！！"
         ];
 
-        // 1%の確率（50回に1回の平均）でtrueを返す
+        const bMessages = [
+            `${currentCount}回も送ってくれて、嬉しいです！！`,
+            `まいさー！${currentCount}個🥹ありがとう！`,
+            `${currentCount}回送ってくれました❣️`,
+            "応援ありがとうございます！！"
+        ];
+
+        let messages = targetPrefix === 'b' ? aMessages : bMessages;
+        // console.log(targetPrefix);
+
+        // 10%の確率でtrueを返す
         const shouldShowMessage = () => Math.random() < 0.1;
 
         // カウントがメッセージを表示すべきかどうかを判断
         if (shouldShowMessage()) {
             const randomMessage = messages[Math.floor(Math.random() * messages.length)];
             document.getElementById('thanks').innerText = randomMessage;
-
+            console.log(randomMessage);
             // メッセージ表示の回数を保存
             localStorage.setItem('lastMessageShownCount', currentCount);
             console.log("currentCount (message shown):", currentCount);
@@ -384,15 +392,13 @@ const handleClickOnImage = (element) => {
 
             // メッセージが表示されてから5回以上クリックされた場合、メッセージを削除
             if (currentCount - lastMessageShownCount > 5) {
-                document.getElementById('thanks').innerText = "";
+                document.getElementById('thanks').innerText = "⛑ご参加ありがとうございます😊";
             }
-            console.log("currentCount:", currentCount);
+            // console.log("currentCount:", currentCount);
         }
-
-
         // IDを使用して要素を選択して、カウントを表示
         const stampCountDiv = document.getElementById('stampCount');
-        stampCountDiv.innerText = `スタンプを飛ばした数: ${currentCount}`;
+        // stampCountDiv.innerText = `スタンプを飛ばした数: ${currentCount}`;
     };
     updateStampCountDisplay();
 };
@@ -412,23 +418,19 @@ const resetIcon = document.getElementById('reset');
 
 // クリックイベントリスナーを追加
 const resetClickCount = () => {
-    const resetIcon = document.getElementById('reset');
+    // const resetIcon = document.getElementById('reset');
 
-    resetIcon.addEventListener('click', () => {
-        // LocalStorageの値をリセット
-        localStorage.removeItem('imageClickCount');
+    // resetIcon.addEventListener('click', () => {
+    // LocalStorageの値をリセット
+    localStorage.removeItem('imageClickCount');
 
-        // オプション：値を明示的に0に設定する場合
-        // localStorage.setItem('imageClickCount', '0');
+    // オプション：値を明示的に0に設定する場合
+    // localStorage.setItem('imageClickCount', '0');
 
-        // カウントを表示
-        displayStampCount();
-    });
+    // カウントを表示
+    // displayStampCount();
+    // });
 };
-
-
-
-
 
 //----------------------------------------
 // ボタンを押した時の関数
@@ -447,8 +449,6 @@ const removeClickedImageAndEnableClick = (element) => {
     element.classList.remove('clicked-image'); // 一定時間経過後に 'clicked-image' クラスを削除
     isClickDisabled = false; // 一定時間後にクリックを再度有効にする
 };
-
-
 
 //----------------------------------------
 // サーバーと通信する関数
