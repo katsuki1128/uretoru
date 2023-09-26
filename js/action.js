@@ -61,16 +61,18 @@ const executeActionsForStatus1 = () => {
             <div class="image-wrapper"><img class="image" src="./img/a4.png" data-id="a4"></div>
             <div class="image-wrapper"><img class="image" src="./img/b3.png" data-id="b3"></div>
             <div class="image-wrapper"><img class="image" src="./img/b4.png" data-id="b4"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a5.png" data-id="a5"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a6.png" data-id="a6"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b5.png" data-id="b5"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b6.png" data-id="b6"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a7.png" data-id="a7"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a8.png" data-id="a8"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b7.png" data-id="b7"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b8.png" data-id="b8"></div>
         </div>
         `;
+
+    // <div class="image-wrapper"><img class="image" src="./img/a5.png" data-id="a5"></div>
+    // <div class="image-wrapper"><img class="image" src="./img/a6.png" data-id="a6"></div>
+    // <div class="image-wrapper"><img class="image" src="./img/b5.png" data-id="b5"></div>
+    // <div class="image-wrapper"><img class="image" src="./img/b6.png" data-id="b6"></div>
+    // <div class="image-wrapper"><img class="image" src="./img/a7.png" data-id="a7"></div>
+    // <div class="image-wrapper"><img class="image" src="./img/a8.png" data-id="a8"></div>
+    // <div class="image-wrapper"><img class="image" src="./img/b7.png" data-id="b7"></div>
+    // <div class="image-wrapper"><img class="image" src="./img/b8.png" data-id="b8"></div>
+
 
     const stampCountWrapper = document.getElementById('stampCountWrapper');
     stampCountWrapper.innerHTML = `
@@ -106,9 +108,15 @@ const executeActionsForStatus1 = () => {
     // トグルのイベントリスナを追加
     addToggleEventListener();
 
-    // displayStampCount();
+    removeDataOlderThan();
+    // resetCount();
 
-    resetClickCount();
+    let currentCount = getCurrentCount();
+    console.log(currentCount);
+
+    if (currentCount >= 2) {
+        addNeverClickableClass();
+    }
 };
 
 
@@ -132,7 +140,7 @@ const executeActionsForStatus2 = () => {
             `;
 
     const targetDiv = document.getElementById('contentDiv');
-    targetDiv.innerHTML = '<p class="text-lg">⭐️毎週金曜に開催しています⭐️<br>⭐️次回の参加をお待ちしています⭐️</p>';
+    targetDiv.innerHTML = '<p class="text-lg">⭐️毎週金曜に開催しています⭐️</p>';
 
     const stampWrapper = document.getElementById('stampWrapper');
     stampWrapper.innerHTML = `
@@ -145,14 +153,20 @@ const executeActionsForStatus2 = () => {
             <div class="image-wrapper"><img class="image" src="./img/a4.png" data-id="a4"></div>
             <div class="image-wrapper"><img class="image" src="./img/b3.png" data-id="b3"></div>
             <div class="image-wrapper"><img class="image" src="./img/b4.png" data-id="b4"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a5.png" data-id="a5"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a6.png" data-id="a6"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b5.png" data-id="b5"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b6.png" data-id="b6"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a7.png" data-id="a7"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a8.png" data-id="a8"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b7.png" data-id="b7"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b8.png" data-id="b8"></div>
+        </div>
+        `;
+
+    const stampCountWrapper = document.getElementById('stampCountWrapper');
+    stampCountWrapper.innerHTML = `
+        <div class="flex flex-col items-center justify-center px-2 pt-2 pb-2 mx-auto">
+            <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
+                <div class="text-center text-sm ml-1 my-2 mr-2">
+
+                    <div class="text-lg mt-2 text-gray-700 font-medium" id="thanks">
+                    ⛑次回の参加をお待ちしています😊
+                    </div>
+                </div>
+            </div>
         </div>
         `;
 
@@ -181,21 +195,21 @@ window.onload = () => {
     const date = location.search.replace("?", "");
     const checkNow = (Number(date) && date.length == 12) ? date : "";
 
-    const status = {};
-    // let status = {};
+    // const status = {};
+    let status = {};
     status.checkNow = checkNow;
     const jsonString = JSON.stringify(status);
     const jsonData = JSON.parse(jsonString);
 
     const stickersStatus = async (param) => {
 
-        const params = { method: "post", body: JSON.stringify(param) };
-        await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersStatus.php", params)
-            .then((response) => response.json())
-            .then((data) => {
-                const status = data[0].Code;
+        // const params = { method: "post", body: JSON.stringify(param) };
+        // await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersStatus.php", params)
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         const status = data[0].Code;
 
-        // status = 1;
+        status = 1;
 
         switch (status) {
             case 1:
@@ -212,9 +226,9 @@ window.onload = () => {
                 break;
         }
 
-        })
-        .catch((error) => {
-        })
+        //     })
+        //     .catch((error) => {
+        //     })
     }
     stickersStatus(jsonData);
 };
@@ -226,7 +240,6 @@ window.onload = () => {
 const adjustImageWidth = () => {
     const deviceWidth = window.innerWidth;
     const itemWidth = deviceWidth / 4;
-
 
     // アイテムの幅が75px未満の場合に調整を開始
     if (itemWidth < 95) {
@@ -248,8 +261,6 @@ const adjustImageWidth = () => {
         });
     }
 };
-
-
 
 //----------------------------------------
 // ▼音声ファイルを再生する関数
@@ -315,8 +326,16 @@ const handleClickOnImage = (element) => {
     // ▼クリックされたらclassにclicked-imageを付与してCSSでアニメーション
     //----------------------------------------
 
+    let currentCount = getCurrentCount();
+    console.log(currentCount);
+
+    if (currentCount >= 2) {
+        addNeverClickableClass();
+    }
+
     element.classList.add('clicked-image'); // クリックされたら 'clicked-image' クラスを追加
     isClickDisabled = true; // クリックを無効化
+
     let targetPrefix;
 
     if (id.startsWith('a')) {
@@ -325,12 +344,12 @@ const handleClickOnImage = (element) => {
         targetPrefix = 'a';
     }
 
-    if (targetPrefix) {
-        const targetElements = document.querySelectorAll(`[data-id^="${targetPrefix}"]`);
-        targetElements.forEach((targetElement) => {
-            targetElement.classList.add('never-clickable');
-        });
-    }
+    // if (targetPrefix) {
+    //     const targetElements = document.querySelectorAll(`[data-id^="${targetPrefix}"]`);
+    //     targetElements.forEach((targetElement) => {
+    //         targetElement.classList.add('never-clickable');
+    //     });
+    // }
 
     // 配列をJSONデータに変換
     const jsonString = JSON.stringify(data);
@@ -342,101 +361,215 @@ const handleClickOnImage = (element) => {
     //----------------------------------------
     if (isSoundOn) {  // isSoundOnがtrueの場合のみ音声を再生
         playSound(id);
-    }
+    };
+
+    //----------------------------------------
+    // ▼クリックした画像の表示
+    //----------------------------------------
+    displayImageInTicket(id);
 
     //----------------------------------------
     // ▼LocalStorageにカウントを保存
     //----------------------------------------
-    const updateStampCountDisplay = () => {
-        // LocalStorageから現在のカウントを取得
-        let currentCount = localStorage.getItem('imageClickCount');
-        if (currentCount === null) {
-            currentCount = 0; // 初めてのクリックの場合は0をセット
-        } else {
-            currentCount = parseInt(currentCount); // 文字列として保存されているので、整数に変換
-        }
-        // console.log(currentCount);
-
-        // カウントを増やす
-        currentCount++;
-
-        // 新しいカウントをLocalStorageに保存
-        localStorage.setItem('imageClickCount', currentCount);
-
-        // メッセージの配列
-        const aMessages = [
-            `${currentCount}回も送ってくれて、おいさんうれしか⛑！！`,
-            `今ので${currentCount}個目ばい⛑!嬉しか！`,
-            `おいさー⛑！いい感じ！${currentCount}個目！`,
-            `${currentCount}回送ってくれたばい⛑！`,
-            "応援ありがとさん⛑⛑！！"
-        ];
-
-        const bMessages = [
-            `${currentCount}回も送ってくれて、嬉しいです！！`,
-            `まいさー！${currentCount}個🥹ありがとう！`,
-            `${currentCount}回送ってくれました❣️`,
-            "応援ありがとうございます！！"
-        ];
-
-        let messages = targetPrefix === 'b' ? aMessages : bMessages;
-        // console.log(targetPrefix);
-
-        // 10%の確率でtrueを返す
-        const shouldShowMessage = () => Math.random() < 0.1;
-
-        // カウントがメッセージを表示すべきかどうかを判断
-        if (shouldShowMessage()) {
-            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-            document.getElementById('thanks').innerText = randomMessage;
-            // console.log(randomMessage);
-            // メッセージ表示の回数を保存
-            localStorage.setItem('lastMessageShownCount', currentCount);
-            // console.log("currentCount (message shown):", currentCount);
-        } else {
-            const lastMessageShownCount = parseInt(localStorage.getItem('lastMessageShownCount') || "0");
-
-            // メッセージが表示されてから5回以上クリックされた場合、メッセージを削除
-            if (currentCount - lastMessageShownCount > 5) {
-                document.getElementById('thanks').innerText = "⛑ご参加ありがとうございます😊";
-            }
-            // console.log("currentCount:", currentCount);
-        }
-        // IDを使用して要素を選択して、カウントを表示
-        const stampCountDiv = document.getElementById('stampCount');
-        // stampCountDiv.innerText = `スタンプを飛ばした数: ${currentCount}`;
-    };
-    updateStampCountDisplay();
+    updateCount(targetPrefix);
 };
 
-const displayStampCount = () => {
-    let currentCount = parseInt(localStorage.getItem('imageClickCount') || "0");
+//----------------------------------------
+// ▼スタンプをクリックできなくする関数
+//----------------------------------------
 
-    const stampCountDiv = document.getElementById('stampCount');
-    stampCountDiv.innerText = `スタンプを飛ばした数: ${currentCount}`;
+const addNeverClickableClass = () => {
+    const targetElements = document.querySelectorAll('.image');
+    targetElements.forEach((targetElement) => {
+        targetElement.classList.add('never-clickable');
+    });
 };
+//----------------------------------------
+// ▼LocalStorageでカウントを制御する関数
+//----------------------------------------
+
+const getCurrentDate = () => {
+    const today = new Date();
+    return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+};
+
+const getCurrentCount = () => {
+    const today = getCurrentDate();
+    return parseInt(localStorage.getItem(`imageClickCount_${today}`) || "0");
+};
+
+const updateCount = (targetPrefix) => {
+    const today = getCurrentDate();
+    let currentCount = getCurrentCount();
+    currentCount++;
+    localStorage.setItem(`imageClickCount_${today}`, currentCount);
+    displayMessage(targetPrefix, currentCount);
+
+};
+const resetCount = () => {
+    const today = getCurrentDate();
+    localStorage.removeItem(`imageClickCount_${today}`);
+};
+
+const removeDataOlderThan = (days) => {
+    const ONE_DAY = 24 * 60 * 60 * 1000;
+    const now = new Date().getTime();
+
+    // days前から始めて、過去のデータが存在しなくなるまで繰り返す
+    for (let i = days; i < 1000; i++) {  // 1000は適当な上限値
+        const daysAgo = new Date(now - i * ONE_DAY);
+        const oldDate = `${daysAgo.getFullYear()}-${daysAgo.getMonth() + 1}-${daysAgo.getDate()}`;
+
+        // データが存在しなければループを抜ける
+        if (!localStorage.getItem(`imageClickCount_${oldDate}`)) break;
+
+        localStorage.removeItem(`imageClickCount_${oldDate}`);
+    }
+};
+
+// 使用例:
+removeDataOlderThan(3);  // 3日以上前のデータを削除
+
+// const getCurrentCount = () => {
+//     let currentCount = localStorage.getItem('imageClickCount');
+//     if (currentCount === null) {
+//         return 0;
+//     } else {
+//         return parseInt(currentCount);
+//     }
+// }
+
+//----------------------------------------
+// ▼LocalStorageにカウントを保存して表示する関数
+//----------------------------------------
+// const updateCount = (targetPrefix) => {
+//     // LocalStorageから現在のカウントを取得
+//     let currentCount = getCurrentCount();
+//     // console.log(currentCount);
+
+//     // カウントを増やす
+//     currentCount++;
+
+//     // 新しいカウントをLocalStorageに保存
+//     localStorage.setItem('imageClickCount', currentCount);
+
+//     // IDを使用して要素を選択して、カウントを表示
+//     // const stampCountDiv = document.getElementById('stampCount');
+//     // stampCountDiv.innerText = `スタンプを飛ばした数: ${currentCount}`;
+
+//     displayMessage(targetPrefix, currentCount);
+// };
+
+// const displayStampCount = () => {
+//     let currentCount = parseInt(localStorage.getItem('imageClickCount') || "0");
+
+//     const stampCountDiv = document.getElementById('stampCount');
+//     stampCountDiv.innerText = `スタンプを飛ばした数: ${currentCount}`;
+// };
+
+//----------------------------------------
+// ▼メッセージを出すロジックと関数
+//----------------------------------------
+
+const displayMessage = (targetPrefix, currentCount) => {
+    // メッセージの配列
+    const aMessages = [
+        `${currentCount}回も送ってくれて、おいさんうれしか⛑！！`,
+        `今ので${currentCount}個目ばい⛑!嬉しか！`,
+        `おいさー⛑！いい感じ！${currentCount}個目！`,
+        `${currentCount}回送ってくれたばい⛑！`,
+        "応援ありがとさん⛑⛑！！"
+    ];
+
+    const bMessages = [
+        `${currentCount}回も送ってくれて、嬉しいです！！`,
+        `まいさー！${currentCount}個🥹ありがとう！`,
+        `${currentCount}回送ってくれました❣️`,
+        "応援ありがとうございます！！"
+    ];
+
+    let messages = targetPrefix === 'b' ? aMessages : bMessages;
+    // console.log(targetPrefix);
+
+    // 10%の確率でtrueを返す
+    const shouldShowMessage = () => Math.random() < 0.1;
+
+    // カウントがメッセージを表示すべきかどうかを判断
+    if (shouldShowMessage()) {
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+        document.getElementById('thanks').innerText = randomMessage;
+        // console.log(randomMessage);
+        // メッセージ表示の回数を保存
+        localStorage.setItem('lastMessageShownCount', currentCount);
+        // console.log("currentCount (message shown):", currentCount);
+    } else {
+        const lastMessageShownCount = parseInt(localStorage.getItem('lastMessageShownCount') || "0");
+
+        // メッセージが表示されてから5回以上クリックされた場合、メッセージを削除
+        if (currentCount - lastMessageShownCount > 5) {
+            document.getElementById('thanks').innerText = "⛑ご参加ありがとうございます😊";
+        }
+        // console.log("currentCount:", currentCount);
+    }
+}
+
+//----------------------------------------
+// ▼クリックした画像の表示関数
+//----------------------------------------
+
+const displayImageInTicket = (id) => {
+    // LocalStorageから現在のカウントを取得
+    let currentCount = getCurrentCount();
+
+    // カウントが3以上の場合、画像の追加をスキップ
+    if (currentCount >= 3) {
+        return;
+    }
+
+    // 画像のsrcを組み立てる
+    const src = `./img/${id}.png`;
+
+    // 最初の空の.image-slotを選択
+    const slot = document.querySelector('.image-slot');
+
+    if (slot) {
+        // img要素を作成して、src属性を設定
+        const img = document.createElement('img');
+        img.src = src;
+        img.style.width = "100px";    // 画像のサイズを指定
+        img.style.height = "100px";   // 画像のサイズを指定
+
+        // 現在の内容 (数字) をクリアして画像を追加
+        slot.innerHTML = "";
+        slot.appendChild(img);
+
+        // .image-slotクラスを取り除く
+        slot.classList.remove('image-slot');
+    }
+};
+
 
 //----------------------------------------
 // 下のトグルボタンの関数
 //----------------------------------------
 // アイコン要素を選択
-const resetIcon = document.getElementById('reset');
+// const resetIcon = document.getElementById('reset');
 
 // クリックイベントリスナーを追加
-const resetClickCount = () => {
-    // const resetIcon = document.getElementById('reset');
+// const resetCount = () => {
+//     // const resetIcon = document.getElementById('reset');
 
-    // resetIcon.addEventListener('click', () => {
-    // LocalStorageの値をリセット
-    localStorage.removeItem('imageClickCount');
+//     // resetIcon.addEventListener('click', () => {
+//     // LocalStorageの値をリセット
+//     localStorage.removeItem('imageClickCount');
 
-    // オプション：値を明示的に0に設定する場合
-    // localStorage.setItem('imageClickCount', '0');
+//     // オプション：値を明示的に0に設定する場合
+//     // localStorage.setItem('imageClickCount', '0');
 
-    // カウントを表示
-    // displayStampCount();
-    // });
-};
+//     // カウントを表示
+//     // displayStampCount();
+//     // });
+// };
 
 //----------------------------------------
 // ボタンを押した時の関数
@@ -463,13 +596,13 @@ const removeClickedImageAndEnableClick = (element) => {
 //----------------------------------------
 const stickers = async (param, element) => {
     const params = { method: "post", body: JSON.stringify(param) };
-    await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickers.php", params)
-        .then((response) => response.json())
-        .then((data) => {
-            // 非同期処理が成功した場合
-            const code = data[0].Code;
+    // await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickers.php", params)
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //         // 非同期処理が成功した場合
+    //         const code = data[0].Code;
 
-    // code = 1;
+    code = 1;
     switch (code) {
         case 1:
             // console.log('データ登録成功');
@@ -487,10 +620,10 @@ const stickers = async (param, element) => {
             break;
     }
     // console.log(param)
-    })
-    .catch((error) => {
-        // 非同期処理が失敗した場合
-    })
+    // })
+    // .catch((error) => {
+    //     // 非同期処理が失敗した場合
+    // })
 };
 
 //----------------------------------------
