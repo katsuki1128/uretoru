@@ -64,22 +64,21 @@ const executeActionsForStatus1 = () => {
         </div>
         `;
 
-    // <div class="image-wrapper"><img class="image" src="./img/a5.png" data-id="a5"></div>
-    // <div class="image-wrapper"><img class="image" src="./img/a6.png" data-id="a6"></div>
-    // <div class="image-wrapper"><img class="image" src="./img/b5.png" data-id="b5"></div>
-    // <div class="image-wrapper"><img class="image" src="./img/b6.png" data-id="b6"></div>
-    // <div class="image-wrapper"><img class="image" src="./img/a7.png" data-id="a7"></div>
-    // <div class="image-wrapper"><img class="image" src="./img/a8.png" data-id="a8"></div>
-    // <div class="image-wrapper"><img class="image" src="./img/b7.png" data-id="b7"></div>
-    // <div class="image-wrapper"><img class="image" src="./img/b8.png" data-id="b8"></div>
-
-
     const stampCountWrapper = document.getElementById('stampCountWrapper');
     stampCountWrapper.innerHTML = `
-        <div class="flex flex-col items-center justify-center px-2 pt-2 pb-2 mx-auto">
+        <div class="flex flex-col items-center justify-center px-3 pt-3 pb-3 mx-auto">
             <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
+                <div id="slot">
+                    <div class="text-lg text-gray-700 font-medium text-center">
+                            スタンプは３回送れます
+                    </div>
+                    <div class="dotted-circles-container">
+                        <div class="dotted-circle image-slot">1</div>
+                        <div class="dotted-circle image-slot">2</div>
+                        <div class="dotted-circle image-slot">3</div>
+                    </div>
+                </div>
                 <div class="text-center text-sm ml-1 my-2 mr-2">
-
                     <div class="text-lg mt-2 text-gray-700 font-medium" id="thanks">
                     ⛑ご参加ありがとうございます😊
                     </div>
@@ -88,16 +87,6 @@ const executeActionsForStatus1 = () => {
         </div>
         `;
 
-
-    // <label class="flex items-center justify-between w-full cursor-pointer">
-    //     <div class="ml-3 text-gray-700 font-medium" id="stampCount">
-    //         スタンプを飛ばした数：
-    //     </div>
-    //     <div class="relative mr-2">
-    //         リセット
-    //         <i class="fa-solid fa-rotate-right" id="reset"></i>
-    //     </div>
-    // </label>
     // 画面サイズの調整関連のロジックを実行
     window.addEventListener('resize', adjustImageWidth);
     adjustImageWidth();
@@ -108,12 +97,12 @@ const executeActionsForStatus1 = () => {
     // トグルのイベントリスナを追加
     addToggleEventListener();
 
+    // 古いLocalStorageを削除
     removeDataOlderThan();
-    // resetCount();
 
+    //その日に３つ送ったらスタンプがクリックできなくなる関数
     let currentCount = getCurrentCount();
     console.log(currentCount);
-
     if (currentCount >= 2) {
         addNeverClickableClass();
     }
@@ -158,10 +147,16 @@ const executeActionsForStatus2 = () => {
 
     const stampCountWrapper = document.getElementById('stampCountWrapper');
     stampCountWrapper.innerHTML = `
-        <div class="flex flex-col items-center justify-center px-2 pt-2 pb-2 mx-auto">
+        <div class="flex flex-col items-center justify-center px-3 pt-3 pb-3 mx-auto">
             <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
+                <div id="slot">
+                    <div class="mt-3 dotted-circles-container">
+                        <div class="dotted-circle image-slot">1</div>
+                        <div class="dotted-circle image-slot">2</div>
+                        <div class="dotted-circle image-slot">3</div>
+                    </div>
+                </div>
                 <div class="text-center text-sm ml-1 my-2 mr-2">
-
                     <div class="text-lg mt-2 text-gray-700 font-medium" id="thanks">
                     ⛑次回の参加をお待ちしています😊
                     </div>
@@ -344,13 +339,6 @@ const handleClickOnImage = (element) => {
         targetPrefix = 'a';
     }
 
-    // if (targetPrefix) {
-    //     const targetElements = document.querySelectorAll(`[data-id^="${targetPrefix}"]`);
-    //     targetElements.forEach((targetElement) => {
-    //         targetElement.classList.add('never-clickable');
-    //     });
-    // }
-
     // 配列をJSONデータに変換
     const jsonString = JSON.stringify(data);
     const jsonData = JSON.parse(jsonString);
@@ -366,7 +354,7 @@ const handleClickOnImage = (element) => {
     //----------------------------------------
     // ▼クリックした画像の表示
     //----------------------------------------
-    displayImageInTicket(id);
+    displayImageInSlot(id);
 
     //----------------------------------------
     // ▼LocalStorageにカウントを保存
@@ -404,11 +392,6 @@ const updateCount = (targetPrefix) => {
     currentCount++;
     localStorage.setItem(`imageClickCount_${today}`, currentCount);
     displayMessage(targetPrefix, currentCount);
-
-};
-const resetCount = () => {
-    const today = getCurrentDate();
-    localStorage.removeItem(`imageClickCount_${today}`);
 };
 
 const removeDataOlderThan = (days) => {
@@ -428,44 +411,7 @@ const removeDataOlderThan = (days) => {
 };
 
 // 使用例:
-removeDataOlderThan(3);  // 3日以上前のデータを削除
-
-// const getCurrentCount = () => {
-//     let currentCount = localStorage.getItem('imageClickCount');
-//     if (currentCount === null) {
-//         return 0;
-//     } else {
-//         return parseInt(currentCount);
-//     }
-// }
-
-//----------------------------------------
-// ▼LocalStorageにカウントを保存して表示する関数
-//----------------------------------------
-// const updateCount = (targetPrefix) => {
-//     // LocalStorageから現在のカウントを取得
-//     let currentCount = getCurrentCount();
-//     // console.log(currentCount);
-
-//     // カウントを増やす
-//     currentCount++;
-
-//     // 新しいカウントをLocalStorageに保存
-//     localStorage.setItem('imageClickCount', currentCount);
-
-//     // IDを使用して要素を選択して、カウントを表示
-//     // const stampCountDiv = document.getElementById('stampCount');
-//     // stampCountDiv.innerText = `スタンプを飛ばした数: ${currentCount}`;
-
-//     displayMessage(targetPrefix, currentCount);
-// };
-
-// const displayStampCount = () => {
-//     let currentCount = parseInt(localStorage.getItem('imageClickCount') || "0");
-
-//     const stampCountDiv = document.getElementById('stampCount');
-//     stampCountDiv.innerText = `スタンプを飛ばした数: ${currentCount}`;
-// };
+removeDataOlderThan(0);  // 3日以上前のデータを削除
 
 //----------------------------------------
 // ▼メッセージを出すロジックと関数
@@ -517,15 +463,7 @@ const displayMessage = (targetPrefix, currentCount) => {
 // ▼クリックした画像の表示関数
 //----------------------------------------
 
-const displayImageInTicket = (id) => {
-    // LocalStorageから現在のカウントを取得
-    let currentCount = getCurrentCount();
-
-    // カウントが3以上の場合、画像の追加をスキップ
-    if (currentCount >= 3) {
-        return;
-    }
-
+const displayImageInSlot = (id) => {
     // 画像のsrcを組み立てる
     const src = `./img/${id}.png`;
 
@@ -547,29 +485,6 @@ const displayImageInTicket = (id) => {
         slot.classList.remove('image-slot');
     }
 };
-
-
-//----------------------------------------
-// 下のトグルボタンの関数
-//----------------------------------------
-// アイコン要素を選択
-// const resetIcon = document.getElementById('reset');
-
-// クリックイベントリスナーを追加
-// const resetCount = () => {
-//     // const resetIcon = document.getElementById('reset');
-
-//     // resetIcon.addEventListener('click', () => {
-//     // LocalStorageの値をリセット
-//     localStorage.removeItem('imageClickCount');
-
-//     // オプション：値を明示的に0に設定する場合
-//     // localStorage.setItem('imageClickCount', '0');
-
-//     // カウントを表示
-//     // displayStampCount();
-//     // });
-// };
 
 //----------------------------------------
 // ボタンを押した時の関数
