@@ -354,7 +354,10 @@ const handleClickOnImage = (element) => {
     //----------------------------------------
     // ▼クリックした画像の表示
     //----------------------------------------
-    displayImageInSlot(id);
+    setTimeout(function () {
+        displayImageInSlot(id);
+    }, 1000);
+
 
     //----------------------------------------
     // ▼LocalStorageにカウントを保存
