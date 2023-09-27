@@ -61,10 +61,6 @@ const executeActionsForStatus1 = () => {
             <div class="image-wrapper"><img class="image" src="./img/a4.png" data-id="a4"></div>
             <div class="image-wrapper"><img class="image" src="./img/b3.png" data-id="b3"></div>
             <div class="image-wrapper"><img class="image" src="./img/b4.png" data-id="b4"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a5.png" data-id="a5"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a6.png" data-id="a6"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b5.png" data-id="b5"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b6.png" data-id="b6"></div>
             <div class="image-wrapper"><img class="image" src="./img/a7.png" data-id="a7"></div>
             <div class="image-wrapper"><img class="image" src="./img/a8.png" data-id="a8"></div>
             <div class="image-wrapper"><img class="image" src="./img/b7.png" data-id="b7"></div>
