@@ -72,11 +72,12 @@ const executeActionsForStatus1 = () => {
                     <div class="text-lg text-gray-700 font-medium text-center">
                             スタンプは３回送れます
                     </div>
-                    <div class="dotted-circles-container">
-                        <div class="dotted-circle image-slot">1</div>
-                        <div class="dotted-circle image-slot">2</div>
-                        <div class="dotted-circle image-slot">3</div>
+                        <div class="dotted-circles-container">
+                        <div class="coin-design image-slot">P</div>
+                        <div class="coin-design image-slot">P</div>
+                        <div class="coin-design image-slot">P</div>
                     </div>
+                
                 </div>
                 <div class="text-center text-sm ml-1 my-2 mr-2">
                     <div class="text-lg mt-2 text-gray-700 font-medium" id="thanks">
@@ -150,11 +151,12 @@ const executeActionsForStatus2 = () => {
         <div class="flex flex-col items-center justify-center px-3 pt-3 pb-3 mx-auto">
             <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
                 <div id="slot">
-                    <div class="mt-3 dotted-circles-container">
-                        <div class="dotted-circle image-slot">1</div>
-                        <div class="dotted-circle image-slot">2</div>
-                        <div class="dotted-circle image-slot">3</div>
-                    </div>
+                    <div class="dotted-circles-container">
+                    <div class="coin-design image-slot">1</div>
+                    <div class="coin-design image-slot">2</div>
+                    <div class="coin-design image-slot">3</div>
+                </div>
+            
                 </div>
                 <div class="text-center text-sm ml-1 my-2 mr-2">
                     <div class="text-lg mt-2 text-gray-700 font-medium" id="thanks">
@@ -371,6 +373,7 @@ const handleClickOnImage = (element) => {
 
 const addNeverClickableClass = () => {
     const targetElements = document.querySelectorAll('.image');
+    console.log(targetElements);
     targetElements.forEach((targetElement) => {
         targetElement.classList.add('never-clickable');
     });
@@ -479,13 +482,15 @@ const displayImageInSlot = (id) => {
         img.src = src;
         img.style.width = "100px";    // 画像のサイズを指定
         img.style.height = "100px";   // 画像のサイズを指定
+        img.classList.add('fade-in'); // フェードインアニメーションのクラスを追加
 
         // 現在の内容 (数字) をクリアして画像を追加
         slot.innerHTML = "";
         slot.appendChild(img);
 
         // .image-slotクラスを取り除く
-        slot.classList.remove('image-slot');
+        slot.classList.remove("image-slot", "coin-design");
+        slot.classList.add("dotted-circle");
     }
 };
 
@@ -504,7 +509,11 @@ const addClickEventToImages = () => {
 //----------------------------------------
 const removeClickedImageAndEnableClick = (element) => {
     element.classList.remove('clicked-image'); // 一定時間経過後に 'clicked-image' クラスを削除
+    element.classList.add('fade-in'); // フェードインアニメーションのクラスを追加
     isClickDisabled = false; // 一定時間後にクリックを再度有効にする
+    setTimeout(() => {
+        element.classList.remove("fade-in");
+    }, 100);
 };
 
 //----------------------------------------

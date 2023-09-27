@@ -14,36 +14,6 @@ body {
 /************************** 
 ユーザー画面 CSSエリア
 ***************************/
-.dotted-circles-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* height: 100px;  */
-    position: relative; 
-}
-
-.dotted-circle {
-    width: 100px;  /* 丸のサイズを調整 */
-    height: 100px;  /* 丸のサイズを調整 */
-    border: 2px dotted black;  /* 点線のスタイルと色を設定 */
-    border-radius: 50%;  /* 丸くするための設定 */
-    margin: 0 10px;  /* 丸同士の間隔を調整 */
-    /* flex: 1; */
-
-    display: flex;           /* flexboxを使用して中央揃えを実現する */
-    align-items: center;     /* 垂直方向の中央揃え */
-    justify-content: center; /* 水平方向の中央揃え */
-    font-size: 24px;         /* 数字のフォントサイズ。必要に応じて調整 */
-    font-weight: bold;       /* 数字のフォントを太字にする */
-}
-
-#stampWrapper {
-    display: flex;
-    justify-content: center;
-    position: relative;
-}
-
-
 /*真ん中の縦の線を表すスタイル */
 #stampWrapper:after {
     content: "";
@@ -102,7 +72,7 @@ body {
     /* デフォルトの透明度 */
     /* opacity: 1; */
     /* 透明度の変更をアニメーションする */
-    transition: opacity 1s;
+    /* transition: opacity 1s; */
 }
 
 /* スタンプがクリックされたときのアニメーション */
@@ -167,12 +137,85 @@ body {
     transform: translateX(80%);
 }
 
+.dotted-circles-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100px;  */
+    position: relative; 
+}
+
+.coin-design {
+    width: 100px;  /* 丸のサイズを調整 */
+    height: 100px;  /* 丸のサイズを調整 */
+    border: 10px solid #ffd400;  /* 点線のスタイルと色を設定 */
+    border-radius: 100%;
+    background: #e5c10b;
+    box-shadow: inset 0 0 0 2px #cca83d;
+
+    margin: 0 10px;  /* 丸同士の間隔を調整 */
+    
+    display: flex;           /* flexboxを使用して中央揃えを実現する */
+    align-items: center;     /* 垂直方向の中央揃え */
+    justify-content: center; /* 水平方向の中央揃え */
+    font-size: 48px;         /* 数字のフォントサイズ。必要に応じて調整 */
+    font-weight: bold;       /* 数字のフォントを太字にする */
+    /* color: white; */
+    color: #ffd400;
+    text-align: center;
+    text-shadow: 2px 2px 0 #cca83d;
+}
+
+.dotted-circle {
+    width: 100px;  /* 丸のサイズを調整 */
+    height: 100px;  /* 丸のサイズを調整 */
+    border: 2px dotted black;  /* 点線のスタイルと色を設定 */
+    border-radius: 50%;  /* 丸くするための設定 */
+    margin: 0 10px;  /* 丸同士の間隔を調整 */
+}
+
+
+#stampWrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s forwards;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* status2と3の時のクラス */
 .gray-out {
     filter: grayscale(100%);
     opacity: 0.6;
     pointer-events: none; /* クリックを無効にする場合 */
 }
+
+
+
 
 /************************** 
 ウレトルクイズ テレビ画面
