@@ -160,6 +160,7 @@ body {
     justify-content: center; /* 水平方向の中央揃え */
     font-size: 48px;         /* 数字のフォントサイズ。必要に応じて調整 */
     font-weight: bold;       /* 数字のフォントを太字にする */
+
     /* color: white; */
     color: #ffd400;
     text-align: center;
@@ -173,6 +174,12 @@ body {
     border: 2px dotted black;  /* 点線のスタイルと色を設定 */
     border-radius: 50%;  /* 丸くするための設定 */
     margin: 0 10px;  /* 丸同士の間隔を調整 */
+
+    display: flex;           /* flexboxを使用して中央揃えを実現する */
+    align-items: center;     /* 垂直方向の中央揃え */
+    justify-content: center; /* 水平方向の中央揃え */
+    font-size: 24px;         /* 数字のフォントサイズ。必要に応じて調整 */
+    font-weight: bold;       /* 数字のフォントを太字にする */
 }
 
 

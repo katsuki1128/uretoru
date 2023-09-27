@@ -78,9 +78,9 @@ const executeActionsForStatus1 = () => {
                     </div>
                     <div>
                         <div class="dotted-circles-container">
-                        <div class="coin-design image-slot">P</div>
-                        <div class="coin-design image-slot">P</div>
-                        <div class="coin-design image-slot">P</div>
+                        <div class="dotted-circle image-slot">1</div>
+                        <div class="dotted-circle image-slot">2</div>
+                        <div class="dotted-circle image-slot">3</div>
                     </div>
 
                 </div>
