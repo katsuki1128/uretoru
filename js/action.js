@@ -69,8 +69,8 @@ const executeActionsForStatus1 = () => {
         <div class="flex flex-col items-center justify-center px-3 pt-3 pb-3 mx-auto">
             <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
                 <div id="slot">
-                    <div class="text-lg text-gray-700 font-medium text-center">
-                            スタンプは３回送れます
+                    <div class="my-2 text-lg text-gray-700 font-medium text-center" id="thanks">
+                    ⛑ 送れるスタンプは３回まで 😊
                     </div>
                         <div class="dotted-circles-container">
                         <div class="coin-design image-slot">P</div>
@@ -444,7 +444,7 @@ const displayMessage = (targetPrefix, currentCount) => {
     // console.log(targetPrefix);
 
     // 10%の確率でtrueを返す
-    const shouldShowMessage = () => Math.random() < 0.1;
+    const shouldShowMessage = () => Math.random() < 0.95;
 
     // カウントがメッセージを表示すべきかどうかを判断
     if (shouldShowMessage()) {
