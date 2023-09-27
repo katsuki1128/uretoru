@@ -25,7 +25,7 @@ const executeActionsForStatus1 = () => {
     targetDiv.innerHTML = `
                 <div class="text-left mb-1">
                     <p class="text-sm mb-2">
-                        ⭐️「Aのマサル」か「Bの伊藤アナ」スタンプで参加しよう！途中変更できないから選択は慎重に！
+                        ⭐️「Aのマサル」「Bの伊藤アナ」スタンプで参加しよう！
                     </p>
                 </div>
 
@@ -61,6 +61,14 @@ const executeActionsForStatus1 = () => {
             <div class="image-wrapper"><img class="image" src="./img/a4.png" data-id="a4"></div>
             <div class="image-wrapper"><img class="image" src="./img/b3.png" data-id="b3"></div>
             <div class="image-wrapper"><img class="image" src="./img/b4.png" data-id="b4"></div>
+            <div class="image-wrapper"><img class="image" src="./img/a5.png" data-id="a5"></div>
+            <div class="image-wrapper"><img class="image" src="./img/a6.png" data-id="a6"></div>
+            <div class="image-wrapper"><img class="image" src="./img/b5.png" data-id="b5"></div>
+            <div class="image-wrapper"><img class="image" src="./img/b6.png" data-id="b6"></div>
+            <div class="image-wrapper"><img class="image" src="./img/a7.png" data-id="a7"></div>
+            <div class="image-wrapper"><img class="image" src="./img/a8.png" data-id="a8"></div>
+            <div class="image-wrapper"><img class="image" src="./img/b7.png" data-id="b7"></div>
+            <div class="image-wrapper"><img class="image" src="./img/b8.png" data-id="b8"></div>
         </div>
         `;
 
@@ -68,21 +76,17 @@ const executeActionsForStatus1 = () => {
     stampCountWrapper.innerHTML = `
         <div class="flex flex-col items-center justify-center px-3 pt-3 pb-3 mx-auto">
             <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
-                <div id="slot">
-                    <div class="my-2 text-lg text-gray-700 font-medium text-center" id="thanks">
+                <div class="p-3" id="slot">
+                    <div class="mb-2 text-lg text-gray-700 font-medium text-center" id="thanks">
                     ⛑ 送れるスタンプは３回まで 😊
                     </div>
+                    <div>
                         <div class="dotted-circles-container">
                         <div class="coin-design image-slot">P</div>
                         <div class="coin-design image-slot">P</div>
                         <div class="coin-design image-slot">P</div>
                     </div>
                 
-                </div>
-                <div class="text-center text-sm ml-1 my-2 mr-2">
-                    <div class="text-lg mt-2 text-gray-700 font-medium" id="thanks">
-                    ⛑ご参加ありがとうございます😊
-                    </div>
                 </div>
             </div>
         </div>
@@ -444,7 +448,7 @@ const displayMessage = (targetPrefix, currentCount) => {
     // console.log(targetPrefix);
 
     // 10%の確率でtrueを返す
-    const shouldShowMessage = () => Math.random() < 0.95;
+    const shouldShowMessage = () => Math.random() < 0.3;
 
     // カウントがメッセージを表示すべきかどうかを判断
     if (shouldShowMessage()) {
