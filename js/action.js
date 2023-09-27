@@ -74,7 +74,7 @@ const executeActionsForStatus1 = () => {
             <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
                 <div class="p-3" id="slot">
                     <div class="mb-2 text-lg text-gray-700 font-medium text-center" id="thanks">
-                    ⛑ 送れるスタンプは３回まで 😊
+                    ⛑ 送れるスタンプは１日３回まで 😊
                     </div>
                     <div>
                         <div class="dotted-circles-container">
@@ -82,8 +82,17 @@ const executeActionsForStatus1 = () => {
                         <div class="coin-design image-slot">P</div>
                         <div class="coin-design image-slot">P</div>
                     </div>
-                
+
                 </div>
+            </div>
+            
+        </div>
+        <div class="flex flex-col items-center mt-3">
+            <div class="my-2">
+                <img src="./img/station_logo.png" alt="logo" class="w-32 h-auto" />
+            </div>
+            <div>
+                <p class="text-xs">© FUKUOKA BROADCASTING SYSTEM CORP.</p>
             </div>
         </div>
         `;
@@ -143,29 +152,32 @@ const executeActionsForStatus2 = () => {
             <div class="image-wrapper"><img class="image" src="./img/a4.png" data-id="a4"></div>
             <div class="image-wrapper"><img class="image" src="./img/b3.png" data-id="b3"></div>
             <div class="image-wrapper"><img class="image" src="./img/b4.png" data-id="b4"></div>
+            <div class="image-wrapper"><img class="image" src="./img/a7.png" data-id="a7"></div>
+            <div class="image-wrapper"><img class="image" src="./img/a8.png" data-id="a8"></div>
+            <div class="image-wrapper"><img class="image" src="./img/b7.png" data-id="b7"></div>
+            <div class="image-wrapper"><img class="image" src="./img/b8.png" data-id="b8"></div>
         </div>
         `;
 
     const stampCountWrapper = document.getElementById('stampCountWrapper');
     stampCountWrapper.innerHTML = `
-        <div class="flex flex-col items-center justify-center px-3 pt-3 pb-3 mx-auto">
-            <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
-                <div id="slot">
+    <div class="flex flex-col items-center justify-center px-3 pt-3 pb-3 mx-auto">
+        <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
+            <div class="p-3" id="slot">
+                <div class="mb-2 text-lg text-gray-700 font-medium text-center" id="thanks">
+                ⛑ 送れるスタンプは１日３回まで 😊
+                </div>
+                <div>
                     <div class="dotted-circles-container">
-                    <div class="coin-design image-slot">1</div>
-                    <div class="coin-design image-slot">2</div>
-                    <div class="coin-design image-slot">3</div>
+                    <div class="coin-design image-slot">P</div>
+                    <div class="coin-design image-slot">P</div>
+                    <div class="coin-design image-slot">P</div>
                 </div>
             
-                </div>
-                <div class="text-center text-sm ml-1 my-2 mr-2">
-                    <div class="text-lg mt-2 text-gray-700 font-medium" id="thanks">
-                    ⛑次回の参加をお待ちしています😊
-                    </div>
-                </div>
             </div>
         </div>
-        `;
+    </div>
+            `;
 
     // 画面サイズの調整関連のロジックを実行
     window.addEventListener('resize', adjustImageWidth);
