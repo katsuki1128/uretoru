@@ -78,9 +78,9 @@ const executeActionsForStatus1 = () => {
                     </div>
                     <div>
                         <div class="dotted-circles-container">
-                        <div class="coin-design image-slot">1</div>
-                        <div class="coin-design image-slot">2</div>
-                        <div class="coin-design image-slot">3</div>
+                        <div class="dotted-circle image-slot">1</div>
+                        <div class="dotted-circle image-slot">2</div>
+                        <div class="dotted-circle image-slot">3</div>
                     </div>
 
                 </div>
@@ -112,7 +112,7 @@ const executeActionsForStatus1 = () => {
 
     //その日に３つ送ったらスタンプがクリックできなくなる関数
     let currentCount = getCurrentCount();
-    console.log(currentCount);
+    // console.log(currentCount);
     if (currentCount >= 2) {
         addNeverClickableClass();
     }
@@ -212,32 +212,32 @@ window.onload = () => {
 
     const stickersStatus = async (param) => {
 
-        // const params = { method: "post", body: JSON.stringify(param) };
-        // await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersStatus.php", params)
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         const status = data[0].Code;
+        const params = { method: "post", body: JSON.stringify(param) };
+        await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersStatus.php", params)
+            .then((response) => response.json())
+            .then((data) => {
+                const status = data[0].Code;
 
-        status = 1;
+                // status = 1;
 
-        switch (status) {
-            case 1:
-                executeActionsForStatus1();
-                break;
-            case 2:
-                executeActionsForStatus2();
-                break;
-            case 3:
-                executeActionsForStatus2();
-                break;
+                switch (status) {
+                    case 1:
+                        executeActionsForStatus1();
+                        break;
+                    case 2:
+                        executeActionsForStatus2();
+                        break;
+                    case 3:
+                        executeActionsForStatus2();
+                        break;
 
-            default:
-                break;
-        }
+                    default:
+                        break;
+                }
 
-        //     })
-        //     .catch((error) => {
-        //     })
+            })
+            .catch((error) => {
+            })
     }
     stickersStatus(jsonData);
 };
@@ -336,7 +336,7 @@ const handleClickOnImage = (element) => {
     //----------------------------------------
 
     let currentCount = getCurrentCount();
-    console.log(currentCount);
+    // console.log(currentCount);
 
     if (currentCount >= 2) {
         addNeverClickableClass();
@@ -385,7 +385,7 @@ const handleClickOnImage = (element) => {
 
 const addNeverClickableClass = () => {
     const targetElements = document.querySelectorAll('.image');
-    console.log(targetElements);
+    // console.log(targetElements);
     targetElements.forEach((targetElement) => {
         targetElement.classList.add('never-clickable');
     });
@@ -535,34 +535,34 @@ const removeClickedImageAndEnableClick = (element) => {
 //----------------------------------------
 const stickers = async (param, element) => {
     const params = { method: "post", body: JSON.stringify(param) };
-    // await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickers.php", params)
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //         // 非同期処理が成功した場合
-    //         const code = data[0].Code;
+    await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickers.php", params)
+        .then((response) => response.json())
+        .then((data) => {
+            // 非同期処理が成功した場合
+            const code = data[0].Code;
 
-    code = 1;
-    switch (code) {
-        case 1:
-            // console.log('データ登録成功');
-            setTimeout(() => {
-                removeClickedImageAndEnableClick(element);
-            }, 1000);
-            break;
-        case 2:
-            // console.log('データ登録失敗');
-            break;
-        case 3:
-            // console.log('データベース接続失敗');
-            break;
-        default:
-            break;
-    }
-    // console.log(param)
-    // })
-    // .catch((error) => {
-    //     // 非同期処理が失敗した場合
-    // })
+            // code = 1;
+            switch (code) {
+                case 1:
+                    // console.log('データ登録成功');
+                    setTimeout(() => {
+                        removeClickedImageAndEnableClick(element);
+                    }, 1000);
+                    break;
+                case 2:
+                    // console.log('データ登録失敗');
+                    break;
+                case 3:
+                    // console.log('データベース接続失敗');
+                    break;
+                default:
+                    break;
+            }
+            // console.log(param)
+        })
+        .catch((error) => {
+            // 非同期処理が失敗した場合
+        })
 };
 
 //----------------------------------------
