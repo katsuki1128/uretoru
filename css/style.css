@@ -142,24 +142,58 @@ body {
     justify-content: center;
     align-items: center;
     /* height: 100px;  */
-    position: relative; 
+    position: relative;
+}
+
+
+.dotted-circle {
+    /* width: 100px; */
+    /* 丸のサイズを調整 */
+    /* height: 100px; */
+    /* 丸のサイズを調整 */
+    border: 2px dotted black;
+    /* 点線のスタイルと色を設定 */
+    border-radius: 50%;
+    /* 丸くするための設定 */
+    /* margin: 0 10px; */
+    /* 丸同士の間隔を調整 */
+
+    display: flex;
+    /* flexboxを使用して中央揃えを実現する */
+    align-items: center;
+    /* 垂直方向の中央揃え */
+    justify-content: center;
+    /* 水平方向の中央揃え */
+    font-size: 24px;
+    /* 数字のフォントサイズ。必要に応じて調整 */
+    font-weight: bold;
+    /* 数字のフォントを太字にする */
 }
 
 .coin-design {
-    width: 100px;  /* 丸のサイズを調整 */
-    height: 100px;  /* 丸のサイズを調整 */
-    border: 10px solid #ffd400;  /* 点線のスタイルと色を設定 */
+    width: 100px;
+    /* 丸のサイズを調整 */
+    height: 100px;
+    /* 丸のサイズを調整 */
+    border: 10px solid #ffd400;
+    /* 点線のスタイルと色を設定 */
     border-radius: 100%;
     background: #e5c10b;
     box-shadow: inset 0 0 0 2px #cca83d;
 
-    margin: 0 10px;  /* 丸同士の間隔を調整 */
-    
-    display: flex;           /* flexboxを使用して中央揃えを実現する */
-    align-items: center;     /* 垂直方向の中央揃え */
-    justify-content: center; /* 水平方向の中央揃え */
-    font-size: 48px;         /* 数字のフォントサイズ。必要に応じて調整 */
-    font-weight: bold;       /* 数字のフォントを太字にする */
+    margin: 0 10px;
+    /* 丸同士の間隔を調整 */
+
+    display: flex;
+    /* flexboxを使用して中央揃えを実現する */
+    align-items: center;
+    /* 垂直方向の中央揃え */
+    justify-content: center;
+    /* 水平方向の中央揃え */
+    font-size: 48px;
+    /* 数字のフォントサイズ。必要に応じて調整 */
+    font-weight: bold;
+    /* 数字のフォントを太字にする */
 
     /* color: white; */
     color: #ffd400;
@@ -168,19 +202,6 @@ body {
 }
 
 
-.dotted-circle {
-    width: 100px;  /* 丸のサイズを調整 */
-    height: 100px;  /* 丸のサイズを調整 */
-    border: 2px dotted black;  /* 点線のスタイルと色を設定 */
-    border-radius: 50%;  /* 丸くするための設定 */
-    margin: 0 10px;  /* 丸同士の間隔を調整 */
-
-    display: flex;           /* flexboxを使用して中央揃えを実現する */
-    align-items: center;     /* 垂直方向の中央揃え */
-    justify-content: center; /* 水平方向の中央揃え */
-    font-size: 24px;         /* 数字のフォントサイズ。必要に応じて調整 */
-    font-weight: bold;       /* 数字のフォントを太字にする */
-}
 
 
 #stampWrapper {
@@ -193,6 +214,7 @@ body {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -219,7 +241,8 @@ body {
 .gray-out {
     filter: grayscale(100%);
     opacity: 0.6;
-    pointer-events: none; /* クリックを無効にする場合 */
+    pointer-events: none;
+    /* クリックを無効にする場合 */
 }
 
 

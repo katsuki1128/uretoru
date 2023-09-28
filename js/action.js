@@ -24,16 +24,19 @@ const executeActionsForStatus1 = () => {
     const targetDiv = document.getElementById('contentDiv');
     targetDiv.innerHTML = `
                 <div class="text-left mb-1">
-                    <p class="text-sm mb-2">
-                        ⭐️「Aのマサル」「Bの伊藤アナ」スタンプで参加しよう！
+                    <p class="text-lg mb-2">
+                        ⭐️Aマサル/B伊藤舞スタンプで応援
+                    </p>
+                    <p class="text-lg mb-2">
+                    ⭐️スタンプがテレビに飛んでいくよ
                     </p>
                 </div>
 
                 <div class="text-center text-sm mx-0 my-0">
                     <label for="toggle" class="flex items-center justify-between w-full cursor-pointer">
                         <!-- ラベルテキスト -->
-                        <div class="ml-0 text-gray-700 text-sm"">
-                            ⭐️ 音声をONにすればボイスも楽しめます
+                        <div class="ml-0 text-gray-700 text-lg"">
+                            ⭐️音声ONでボイスも楽しめます♪ 
                         </div>
                         <!-- トグルボタン本体 -->
                         <div class="relative">
@@ -61,10 +64,6 @@ const executeActionsForStatus1 = () => {
             <div class="image-wrapper"><img class="image" src="./img/a4.png" data-id="a4"></div>
             <div class="image-wrapper"><img class="image" src="./img/b3.png" data-id="b3"></div>
             <div class="image-wrapper"><img class="image" src="./img/b4.png" data-id="b4"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a7.png" data-id="a7"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a8.png" data-id="a8"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b7.png" data-id="b7"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b8.png" data-id="b8"></div>
         </div>
         `;
 
@@ -74,7 +73,7 @@ const executeActionsForStatus1 = () => {
             <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
                 <div class="p-3" id="slot">
                     <div class="mb-2 text-lg text-gray-700 font-medium text-center" id="thanks">
-                    ⛑ 送れるスタンプは１日３回まで 😊
+                    ⛑ 送れるスタンプは１日３回です 😊
                     </div>
                     <div>
                         <div class="dotted-circles-container">
@@ -116,6 +115,10 @@ const executeActionsForStatus1 = () => {
     if (currentCount >= 2) {
         addNeverClickableClass();
     }
+
+    // ページの読み込み時にも調整
+    window.addEventListener('resize', adjustDottedCircleSize);
+    adjustDottedCircleSize();
 };
 
 
@@ -130,7 +133,6 @@ const executeActionsForStatus2 = () => {
                     <div>
                         <img class="w-full h-15 mr-2" src="./img/uretoru_logo.png" alt="logo" />
                         <div class="text-center mt-4 mb-0 mx-0" id="contentDiv">
-
                         </div>
                     </div>
                 </div>
@@ -152,10 +154,6 @@ const executeActionsForStatus2 = () => {
             <div class="image-wrapper"><img class="image" src="./img/a4.png" data-id="a4"></div>
             <div class="image-wrapper"><img class="image" src="./img/b3.png" data-id="b3"></div>
             <div class="image-wrapper"><img class="image" src="./img/b4.png" data-id="b4"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a7.png" data-id="a7"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a8.png" data-id="a8"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b7.png" data-id="b7"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b8.png" data-id="b8"></div>
         </div>
         `;
 
@@ -169,9 +167,9 @@ const executeActionsForStatus2 = () => {
                 </div>
                 <div>
                     <div class="dotted-circles-container">
-                    <div class="coin-design image-slot">P</div>
-                    <div class="coin-design image-slot">P</div>
-                    <div class="coin-design image-slot">P</div>
+                    <div class="dotted-circle image-slot">1</div>
+                    <div class="dotted-circle image-slot">2</div>
+                    <div class="dotted-circle image-slot">3</div>
                 </div>
             
             </div>
@@ -205,7 +203,6 @@ window.onload = () => {
     const checkNow = (Number(date) && date.length == 12) ? date : "";
 
     // const status = {};
-    let status = {};
     status.checkNow = checkNow;
     const jsonString = JSON.stringify(status);
     const jsonData = JSON.parse(jsonString);
@@ -213,31 +210,31 @@ window.onload = () => {
     const stickersStatus = async (param) => {
 
         const params = { method: "post", body: JSON.stringify(param) };
-        await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersStatus.php", params)
-            .then((response) => response.json())
-            .then((data) => {
-                const status = data[0].Code;
+        // await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersStatus.php", params)
+        //     .then((response) => response.json())
+        //     .then((data) => {
+        //         const status = data[0].Code;
 
-                // status = 1;
+        const status = 1;
 
-                switch (status) {
-                    case 1:
-                        executeActionsForStatus1();
-                        break;
-                    case 2:
-                        executeActionsForStatus2();
-                        break;
-                    case 3:
-                        executeActionsForStatus2();
-                        break;
+        switch (status) {
+            case 1:
+                executeActionsForStatus1();
+                break;
+            case 2:
+                executeActionsForStatus2();
+                break;
+            case 3:
+                executeActionsForStatus2();
+                break;
 
-                    default:
-                        break;
-                }
+            default:
+                break;
+        }
 
-            })
-            .catch((error) => {
-            })
+        // })
+        // .catch((error) => {
+        // })
     }
     stickersStatus(jsonData);
 };
@@ -258,6 +255,7 @@ const adjustImageWidth = () => {
 
         document.querySelectorAll('.image').forEach(img => {
             img.style.width = `${adjustedWidth}px`;
+            img.style.height = `${adjustedWidth}px`;
             img.style.marginLeft = `${adjustedMargin}px`;
             img.style.marginRight = `${adjustedMargin}px`;
         });
@@ -265,11 +263,44 @@ const adjustImageWidth = () => {
         // 95px以上の場合は初期のスタイルを適用
         document.querySelectorAll('.image').forEach(img => {
             img.style.width = '75px';
+            img.style.height = '75px';
             img.style.marginLeft = '10px';
             img.style.marginRight = '10px';
         });
     }
 };
+
+//----------------------------------------
+// ▼点線の丸の幅を設定
+//----------------------------------------
+
+let circleSize = 110; // デフォルトのサイズ
+let circleMargin = 10; // デフォルトのマージン
+
+const adjustDottedCircleSize = () => {
+    const deviceWidth = window.innerWidth;
+    const itemWidth = (deviceWidth - 48) / 3;
+    // console.log(itemWidth)
+
+    if (itemWidth < (circleSize + 2 * circleMargin)) { // 100pxの円 + 2 * 10pxのマージン = 115px
+        circleSize = itemWidth * 0.9; // 80%
+        circleMargin = itemWidth * 0.05; // 10%
+    }
+
+    document.querySelectorAll('.dotted-circle').forEach(circle => {
+        circle.style.width = `${circleSize}px`;
+        circle.style.height = `${circleSize}px`;
+        console.log("width", circle.style.width, "height", circle.style.height);
+
+        circle.style.marginLeft = `${circleMargin}px`;
+        circle.style.marginRight = `${circleMargin}px`;
+    });
+};
+
+// ブラウザのリサイズイベントに応じて調整
+window.addEventListener('resize', adjustDottedCircleSize);
+
+
 
 //----------------------------------------
 // ▼音声ファイルを再生する関数
@@ -492,8 +523,8 @@ const displayImageInSlot = (id) => {
         // img要素を作成して、src属性を設定
         const img = document.createElement('img');
         img.src = src;
-        img.style.width = "100px";    // 画像のサイズを指定
-        img.style.height = "100px";   // 画像のサイズを指定
+        img.style.width = `${circleSize}px`;    // 画像のサイズを指定
+        img.style.height = `${circleSize}px`;   // 画像のサイズを指定
         img.classList.add('fade-in'); // フェードインアニメーションのクラスを追加
 
         // 現在の内容 (数字) をクリアして画像を追加
@@ -535,34 +566,34 @@ const removeClickedImageAndEnableClick = (element) => {
 //----------------------------------------
 const stickers = async (param, element) => {
     const params = { method: "post", body: JSON.stringify(param) };
-    await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickers.php", params)
-        .then((response) => response.json())
-        .then((data) => {
-            // 非同期処理が成功した場合
-            const code = data[0].Code;
+    // await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickers.php", params)
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //         // 非同期処理が成功した場合
+    //         const code = data[0].Code;
 
-            // code = 1;
-            switch (code) {
-                case 1:
-                    // console.log('データ登録成功');
-                    setTimeout(() => {
-                        removeClickedImageAndEnableClick(element);
-                    }, 1000);
-                    break;
-                case 2:
-                    // console.log('データ登録失敗');
-                    break;
-                case 3:
-                    // console.log('データベース接続失敗');
-                    break;
-                default:
-                    break;
-            }
-            // console.log(param)
-        })
-        .catch((error) => {
-            // 非同期処理が失敗した場合
-        })
+    code = 1;
+    switch (code) {
+        case 1:
+            // console.log('データ登録成功');
+            setTimeout(() => {
+                removeClickedImageAndEnableClick(element);
+            }, 1000);
+            break;
+        case 2:
+            // console.log('データ登録失敗');
+            break;
+        case 3:
+            // console.log('データベース接続失敗');
+            break;
+        default:
+            break;
+    }
+    // console.log(param)
+    // })
+    // .catch((error) => {
+    //     // 非同期処理が失敗した場合
+    // })
 };
 
 //----------------------------------------
