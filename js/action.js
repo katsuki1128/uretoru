@@ -30,6 +30,9 @@ const executeActionsForStatus1 = () => {
                     <p class="text-lg mb-2">
                     ⭐️スタンプがテレビに飛んでいくよ
                     </p>
+                    <p class="text-lg mb-2">
+                    ⭐️音声が出ます♪
+                    </p>
                 </div>
 
                 <div class="text-center text-sm mx-0 my-0">
@@ -41,7 +44,7 @@ const executeActionsForStatus1 = () => {
                         <!-- トグルボタン本体 -->
                         <div class="relative">
                             <!-- input要素 -->
-                            <input type="checkbox" id="toggle" class="sr-only">
+                            <input type="checkbox" id="toggle" class="sr-only" checked>
                             <!-- スライダー -->
                             <div class="w-12 h-7 bg-gray-400 rounded-full shadow-inner transition-colors duration-200">
                                 <!-- チェックされたときの背景色 -->
@@ -290,7 +293,7 @@ const adjustDottedCircleSize = () => {
     document.querySelectorAll('.dotted-circle').forEach(circle => {
         circle.style.width = `${circleSize}px`;
         circle.style.height = `${circleSize}px`;
-        console.log("width", circle.style.width, "height", circle.style.height);
+        // console.log("width", circle.style.width, "height", circle.style.height);
 
         circle.style.marginLeft = `${circleMargin}px`;
         circle.style.marginRight = `${circleMargin}px`;
@@ -337,7 +340,7 @@ const playSound = (id) => {
 //----------------------------------------
 
 let isClickDisabled = false; // クリック無効フラグ
-let isSoundOn = false; // 音声のオン/オフを切り替えるための変数
+let isSoundOn = true; // 音声のオン/オフを切り替えるための変数
 
 const addToggleEventListener = () => {
     document.getElementById('toggle').addEventListener('change', function (event) {
@@ -394,6 +397,7 @@ const handleClickOnImage = (element) => {
     //----------------------------------------
     if (isSoundOn) {  // isSoundOnがtrueの場合のみ音声を再生
         playSound(id);
+        // console.log(id)
     };
 
     //----------------------------------------
