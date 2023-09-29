@@ -33,27 +33,7 @@ const executeActionsForStatus1 = () => {
                     <p class="text-lg mb-2">
                     ⭐️音声が出ます♪
                     </p>
-                </div>
-
-                <div class="text-center text-sm mx-0 my-0">
-                    <label for="toggle" class="flex items-center justify-between w-full cursor-pointer">
-                        <!-- ラベルテキスト -->
-                        <div class="ml-0 text-gray-700 text-lg"">
-                            ⭐️音声ONでボイスも楽しめます♪ 
-                        </div>
-                        <!-- トグルボタン本体 -->
-                        <div class="relative">
-                            <!-- input要素 -->
-                            <input type="checkbox" id="toggle" class="sr-only" checked>
-                            <!-- スライダー -->
-                            <div class="w-12 h-7 bg-gray-400 rounded-full shadow-inner transition-colors duration-200">
-                                <!-- チェックされたときの背景色 -->
-                                <div class="dot absolute w-6 h-6 bg-white rounded-full shadow left-0.5 top-0.5 transition transform duration-200">
-                                </div>
-                            </div>
-                        </div>
-                    </label>
-                </div>
+                </div>            
             `;
 
     const stampWrapper = document.getElementById('stampWrapper');
@@ -107,7 +87,7 @@ const executeActionsForStatus1 = () => {
     addClickEventToImages();
 
     // トグルのイベントリスナを追加
-    addToggleEventListener();
+    // addToggleEventListener();
 
     // 古いLocalStorageを削除
     removeDataOlderThan();
@@ -120,7 +100,7 @@ const executeActionsForStatus1 = () => {
     }
 
     // ページの読み込み時にも調整
-    window.addEventListener('resize', adjustDottedCircleSize);
+    // window.addEventListener('resize', adjustDottedCircleSize);
     adjustDottedCircleSize();
 };
 
@@ -189,6 +169,7 @@ const executeActionsForStatus2 = () => {
         image.parentElement.classList.add('gray-out');
     });
 
+    adjustDottedCircleSize();
 };
 
 //----------------------------------------
@@ -205,7 +186,7 @@ window.onload = () => {
     const date = location.search.replace("?", "");
     const checkNow = (Number(date) && date.length == 12) ? date : "";
 
-    // const status = {};
+    const status = {};
     status.checkNow = checkNow;
     const jsonString = JSON.stringify(status);
     const jsonData = JSON.parse(jsonString);
@@ -277,18 +258,22 @@ const adjustImageWidth = () => {
 // ▼点線の丸の幅を設定
 //----------------------------------------
 
-let circleSize = 110; // デフォルトのサイズ
-let circleMargin = 10; // デフォルトのマージン
+
 
 const adjustDottedCircleSize = () => {
+
+    let circleSize = 110; // デフォルトのサイズ
+    let circleMargin = 10; // デフォルトのマージン
+
     const deviceWidth = window.innerWidth;
     const itemWidth = (deviceWidth - 48) / 3;
-    // console.log(itemWidth)
+
 
     if (itemWidth < (circleSize + 2 * circleMargin)) { // 100pxの円 + 2 * 10pxのマージン = 115px
         circleSize = itemWidth * 0.9; // 80%
         circleMargin = itemWidth * 0.05; // 10%
     }
+    // console.log("itemWidth", itemWidth, "circleSize", circleSize)
 
     document.querySelectorAll('.dotted-circle').forEach(circle => {
         circle.style.width = `${circleSize}px`;
@@ -302,6 +287,7 @@ const adjustDottedCircleSize = () => {
 
 // ブラウザのリサイズイベントに応じて調整
 window.addEventListener('resize', adjustDottedCircleSize);
+
 
 
 
@@ -342,11 +328,11 @@ const playSound = (id) => {
 let isClickDisabled = false; // クリック無効フラグ
 let isSoundOn = true; // 音声のオン/オフを切り替えるための変数
 
-const addToggleEventListener = () => {
-    document.getElementById('toggle').addEventListener('change', function (event) {
-        isSoundOn = event.target.checked;
-    });
-};
+// const addToggleEventListener = () => {
+//     document.getElementById('toggle').addEventListener('change', function (event) {
+//         isSoundOn = event.target.checked;
+//     });
+// };
 
 const handleClickOnImage = (element) => {
     //----------------------------------------
