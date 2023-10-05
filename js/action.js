@@ -194,31 +194,31 @@ window.onload = () => {
     const stickersStatus = async (param) => {
 
         const params = { method: "post", body: JSON.stringify(param) };
-        // await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersStatus.php", params)
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         const status = data[0].Code;
+        await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersStatus.php", params)
+            .then((response) => response.json())
+            .then((data) => {
+                const status = data[0].Code;
 
-        const status = 1;
+                // const status = 1;
 
-        switch (status) {
-            case 1:
-                executeActionsForStatus1();
-                break;
-            case 2:
-                executeActionsForStatus2();
-                break;
-            case 3:
-                executeActionsForStatus2();
-                break;
+                switch (status) {
+                    case 1:
+                        executeActionsForStatus1();
+                        break;
+                    case 2:
+                        executeActionsForStatus2();
+                        break;
+                    case 3:
+                        executeActionsForStatus2();
+                        break;
 
-            default:
-                break;
-        }
+                    default:
+                        break;
+                }
 
-        // })
-        // .catch((error) => {
-        // })
+            })
+            .catch((error) => {
+            })
     }
     stickersStatus(jsonData);
 };
@@ -257,13 +257,10 @@ const adjustImageWidth = () => {
 //----------------------------------------
 // ▼点線の丸の幅を設定
 //----------------------------------------
-
-
+let circleSize = 110; // デフォルトのサイズ
+let circleMargin = 10; // デフォルトのマージン
 
 const adjustDottedCircleSize = () => {
-
-    let circleSize = 110; // デフォルトのサイズ
-    let circleMargin = 10; // デフォルトのマージン
 
     const deviceWidth = window.innerWidth;
     const itemWidth = (deviceWidth - 48) / 3;
@@ -450,7 +447,7 @@ const removeDataOlderThan = (days) => {
 };
 
 // 使用例:
-removeDataOlderThan(0);  // 3日以上前のデータを削除
+removeDataOlderThan(3);  // 3日以上前のデータを削除
 
 //----------------------------------------
 // ▼メッセージを出すロジックと関数
@@ -556,34 +553,34 @@ const removeClickedImageAndEnableClick = (element) => {
 //----------------------------------------
 const stickers = async (param, element) => {
     const params = { method: "post", body: JSON.stringify(param) };
-    // await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickers.php", params)
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //         // 非同期処理が成功した場合
-    //         const code = data[0].Code;
+    await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickers.php", params)
+        .then((response) => response.json())
+        .then((data) => {
+            // 非同期処理が成功した場合
+            const code = data[0].Code;
 
-    code = 1;
-    switch (code) {
-        case 1:
-            // console.log('データ登録成功');
-            setTimeout(() => {
-                removeClickedImageAndEnableClick(element);
-            }, 1000);
-            break;
-        case 2:
-            // console.log('データ登録失敗');
-            break;
-        case 3:
-            // console.log('データベース接続失敗');
-            break;
-        default:
-            break;
-    }
-    // console.log(param)
-    // })
-    // .catch((error) => {
-    //     // 非同期処理が失敗した場合
-    // })
+            // code = 1;
+            switch (code) {
+                case 1:
+                    // console.log('データ登録成功');
+                    setTimeout(() => {
+                        removeClickedImageAndEnableClick(element);
+                    }, 1000);
+                    break;
+                case 2:
+                    // console.log('データ登録失敗');
+                    break;
+                case 3:
+                    // console.log('データベース接続失敗');
+                    break;
+                default:
+                    break;
+            }
+            // console.log(param)
+        })
+        .catch((error) => {
+            // 非同期処理が失敗した場合
+        })
 };
 
 //----------------------------------------
