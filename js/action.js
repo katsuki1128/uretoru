@@ -94,7 +94,7 @@ const executeActionsForStatus1 = () => {
 
     //その日に３つ送ったらスタンプがクリックできなくなる関数
     let currentCount = getCurrentCount();
-    console.log(currentCount);
+    // console.log(currentCount);
 
     // console.log(currentCount);
     if (currentCount >= 3) {
@@ -188,7 +188,7 @@ window.onload = () => {
     const date = location.search.replace("?", "");
     const checkNow = (Number(date) && date.length == 12) ? date : "";
 
-    // const status = {};
+    const status = {};
     status.checkNow = checkNow;
     const jsonString = JSON.stringify(status);
     const jsonData = JSON.parse(jsonString);
@@ -196,31 +196,31 @@ window.onload = () => {
     const stickersStatus = async (param) => {
 
         const params = { method: "post", body: JSON.stringify(param) };
-        // await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersStatus.php", params)
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         const status = data[0].Code;
+        await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersStatus.php", params)
+            .then((response) => response.json())
+            .then((data) => {
+                const status = data[0].Code;
 
-        const status = 1;
+                // const status = 1;
 
-        switch (status) {
-            case 1:
-                executeActionsForStatus1();
-                break;
-            case 2:
-                executeActionsForStatus2();
-                break;
-            case 3:
-                executeActionsForStatus2();
-                break;
+                switch (status) {
+                    case 1:
+                        executeActionsForStatus1();
+                        break;
+                    case 2:
+                        executeActionsForStatus2();
+                        break;
+                    case 3:
+                        executeActionsForStatus2();
+                        break;
 
-            default:
-                break;
-        }
+                    default:
+                        break;
+                }
 
-        // })
-        // .catch((error) => {
-        // })
+            })
+            .catch((error) => {
+            })
     }
     stickersStatus(jsonData);
 };
@@ -267,20 +267,22 @@ const adjustDottedCircleSize = () => {
     const deviceWidth = window.innerWidth;
     const itemWidth = (deviceWidth - 48) / 3;
 
+    let newSize = circleSize;
+    let newMargin = circleMargin;
 
-    if (itemWidth < (circleSize + 2 * circleMargin)) { // 100pxの円 + 2 * 10pxのマージン = 115px
-        circleSize = itemWidth * 0.9; // 80%
-        circleMargin = itemWidth * 0.05; // 10%
+    if (itemWidth < (circleSize + 2 * circleMargin)) {
+        newSize = itemWidth * 0.9;
+        newMargin = itemWidth * 0.05;
     }
-    // console.log("itemWidth", itemWidth, "circleSize", circleSize)
+
+    // console.log("itemWidth", itemWidth, "circleSize", newSize)
 
     document.querySelectorAll('.dotted-circle').forEach(circle => {
-        circle.style.width = `${circleSize}px`;
-        circle.style.height = `${circleSize}px`;
-        // console.log("width", circle.style.width, "height", circle.style.height);
+        circle.style.width = `${newSize}px`;
+        circle.style.height = `${newSize}px`;
+        circle.style.marginLeft = `${newMargin}px`;
+        circle.style.marginRight = `${newMargin}px`;
 
-        circle.style.marginLeft = `${circleMargin}px`;
-        circle.style.marginRight = `${circleMargin}px`;
     });
 };
 
@@ -422,7 +424,6 @@ const getCurrentDate = () => {
 const getCurrentCount = () => {
     const today = getCurrentDate();
     return parseInt(localStorage.getItem(`imageClickCount_${today}`) || "0");
-    console.log()
 };
 
 const updateCount = (targetPrefix) => {
@@ -502,7 +503,7 @@ const displayMessage = (targetPrefix, currentCount) => {
 // ▼クリックした画像の表示関数
 //----------------------------------------
 
-const displayImageInSlot = (id) => {
+const displayImageInSlot = (id, circleSize) => {
     // 画像のsrcを組み立てる
     const src = `./img/${id}.png`;
 
@@ -516,6 +517,7 @@ const displayImageInSlot = (id) => {
         img.style.width = `${circleSize}px`;    // 画像のサイズを指定
         img.style.height = `${circleSize}px`;   // 画像のサイズを指定
         img.classList.add('fade-in'); // フェードインアニメーションのクラスを追加
+        // console.log(img.style.width);
 
         // 現在の内容 (数字) をクリアして画像を追加
         slot.innerHTML = "";
@@ -556,34 +558,34 @@ const removeClickedImageAndEnableClick = (element) => {
 //----------------------------------------
 const stickers = async (param, element) => {
     const params = { method: "post", body: JSON.stringify(param) };
-    // await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickers.php", params)
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //         // 非同期処理が成功した場合
-    //         const code = data[0].Code;
+    await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickers.php", params)
+        .then((response) => response.json())
+        .then((data) => {
+            // 非同期処理が成功した場合
+            const code = data[0].Code;
 
-    code = 1;
-    switch (code) {
-        case 1:
-            // console.log('データ登録成功');
-            setTimeout(() => {
-                removeClickedImageAndEnableClick(element);
-            }, 1000);
-            break;
-        case 2:
-            // console.log('データ登録失敗');
-            break;
-        case 3:
-            // console.log('データベース接続失敗');
-            break;
-        default:
-            break;
-    }
-    // console.log(param)
-    // })
-    // .catch((error) => {
-    //     // 非同期処理が失敗した場合
-    // })
+            code = 1;
+            switch (code) {
+                case 1:
+                    // console.log('データ登録成功');
+                    setTimeout(() => {
+                        removeClickedImageAndEnableClick(element);
+                    }, 1000);
+                    break;
+                case 2:
+                    // console.log('データ登録失敗');
+                    break;
+                case 3:
+                    // console.log('データベース接続失敗');
+                    break;
+                default:
+                    break;
+            }
+            // console.log(param)
+        })
+        .catch((error) => {
+            // 非同期処理が失敗した場合
+        })
 };
 
 //----------------------------------------
