@@ -30,15 +30,14 @@
     </div>
 
     <!-- 左下のA_Groupの個数表示 -->
-    <div id="AGroupCount" class="stampCount" style="font-size: 20px; position: absolute; bottom: 0; left: 0;z-index: 5">
+    <div id="AGroupCount" class="stampCount" style="font-size: 75px; position: absolute; bottom: 23px; left: 71px;">
     </div>
 
     <!-- 右側のB_Groupのパーセンテージ表示 -->
     <div id="BGroupPercentage" style="font-size: 100px; position: absolute; bottom: 21px; right: -55px;"></div>
 
-    <!-- 右下のA_Groupの個数表示 -->
-    <div id="BGroupCount" class="stampCount"
-        style="font-size: 20px; position: absolute; bottom: 0; right: 0;z-index: 5">
+    <!-- 右下のB_Groupの個数表示 -->
+    <div id="BGroupCount" class="stampCount" style="font-size: 75px; position: absolute; bottom: 23px; right: -15px;">
     </div>
 
     <script>
@@ -106,18 +105,27 @@
         // // ▼ローカル動作用配列
         // // ----------------------------------------
         const data = [
-            { "stickers": "a1", "count(*)": "3", "url": "./img/a1.png" },
-            { "stickers": "a2", "count(*)": "7", "url": "./img/a2.png" },
-            { "stickers": "a3", "count(*)": "8", "url": "./img/a3.png" },
-            { "stickers": "a4", "count(*)": "0", "url": "./img/a4.png" },
+            { "stickers": "a1", "count(*)": "3", "url": "./img/a1test.png" },
+            { "stickers": "a2", "count(*)": "7", "url": "./img/a1test.png" },
+            { "stickers": "a3", "count(*)": "8", "url": "./img/a1test.png" },
+            { "stickers": "a4", "count(*)": "0", "url": "./img/a1test.png" },
+            { "stickers": "b1", "count(*)": "9", "url": "./img/a1test.png" },
+            { "stickers": "b2", "count(*)": "7", "url": "./img/a1test.png" },
+            { "stickers": "b3", "count(*)": "5", "url": "./img/a1test.png" },
+            { "stickers": "b4", "count(*)": "0", "url": "./img/a1test.png" },
+
+            // { "stickers": "a1", "count(*)": "3", "url": "./img/a1.png" },
+            // { "stickers": "a2", "count(*)": "7", "url": "./img/a2.png" },
+            // { "stickers": "a3", "count(*)": "8", "url": "./img/a3.png" },
+            // { "stickers": "a4", "count(*)": "0", "url": "./img/a4.png" },
             // { "stickers": "a5", "count(*)": "0", "url": "./img/a5.png" },
             // { "stickers": "a6", "count(*)": "0", "url": "./img/a6.png" },
             // { "stickers": "a7", "count(*)": "0", "url": "./img/a7.png" },
             // { "stickers": "a8", "count(*)": "0", "url": "./img/a8.png" },
-            { "stickers": "b1", "count(*)": "9", "url": "./img/b1.png" },
-            { "stickers": "b2", "count(*)": "7", "url": "./img/b2.png" },
-            { "stickers": "b3", "count(*)": "5", "url": "./img/b3.png" },
-            { "stickers": "b4", "count(*)": "0", "url": "./img/b4.png" },
+            // { "stickers": "b1", "count(*)": "9", "url": "./img/b1.png" },
+            // { "stickers": "b2", "count(*)": "7", "url": "./img/b2.png" },
+            // { "stickers": "b3", "count(*)": "5", "url": "./img/b3.png" },
+            // { "stickers": "b4", "count(*)": "0", "url": "./img/b4.png" },
             // { "stickers": "b5", "count(*)": "0", "url": "./img/b5.png" },
             // { "stickers": "b6", "count(*)": "0", "url": "./img/b6.png" },
             // { "stickers": "b7", "count(*)": "0", "url": "./img/b7.png" },
@@ -568,7 +576,7 @@
         //----------------------------------------
         // ▼棒グラフの描画関数(カウント数にもどついて)
         //----------------------------------------
-        const MAX_COUNT_VALUE = 50;  // 最大値を50に設定
+        const MAX_COUNT_VALUE = 20;  // 最大値を50に設定
         // const LEVELS = [50, 100, 150, 200, 250, 300, 500]; // カウントのレベル
 
 
@@ -581,7 +589,6 @@
         // };
         const getDominantCount = (countA, countB) => {
             return Math.max(countA, countB); // 2つのカウントの中で高い方を返す
-            // return Math.max(countA % MAX_COUNT_VALUE, countB % MAX_COUNT_VALUE); // 2つのカウントの中で高い方を返す
         };
         const getNearestMultipleOfMaxCountValue = (dominant) => {
             let multiple = Math.floor(dominant / MAX_COUNT_VALUE);
@@ -589,13 +596,9 @@
             return multiple * MAX_COUNT_VALUE;
         };
 
-        // const adjustedCount = (dominantCount) => {
-        //     for (let i = 0; i < LEVELS.length; i++) {
-        //         if (dominantCount >= LEVELS[i]) {
-        //             return dominantCount % LEVELS[i];
-        //         }
-        //     }
-        //     return dominantCount;
+        // const adjustedCount = (count) => {
+        //     let nearestMultiple = getNearestMultipleOfMaxCountValue(count);
+        //     return count - nearestMultiple;
         // };
 
         function drawBarGraph(AGroupCount, BGroupCount) {
@@ -608,7 +611,7 @@
 
             const dominant = getDominantCount(AGroupCount, BGroupCount); // どちらのカウントが高いかを取得
             const nearestMultiple = getNearestMultipleOfMaxCountValue(dominant);
-            console.log(dominant, nearestMultiple);
+            // console.log(dominant, nearestMultiple);
             // const adjustedDominantCount = adjustedCount(dominantCount); // 調整されたドミナントカウントを取得
 
             // const targetAGroupHeight = calculateBarHeight(adjustedDominantCount, maxCanvasHeight, canvas.height);
@@ -620,7 +623,9 @@
             // const targetBGroupHeight = calculateBarHeight(BGroupCount % MAX_COUNT_VALUE, maxCanvasHeight, canvas.height);
             const targetAGroupHeight = calculateBarHeight(AGroupCount - nearestMultiple, maxCanvasHeight, canvas.height);
             const targetBGroupHeight = calculateBarHeight(BGroupCount - nearestMultiple, maxCanvasHeight, canvas.height);
-
+            const adjustedAGroupCount = Math.abs(AGroupCount - nearestMultiple);
+            const adjustedBGroupCount = Math.abs(BGroupCount - nearestMultiple);
+            // console.log(adjustedAGroupCount, adjustedBGroupCount)
             // const targetAGroupHeight = calculateBarHeight(AGroupCount, maxCanvasHeight, canvas.height);
             // const targetBGroupHeight = calculateBarHeight(BGroupCount, maxCanvasHeight, canvas.height);
 

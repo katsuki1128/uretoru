@@ -256,6 +256,24 @@ body {
     -ms-overflow-style: none;
 }
 
+
+#AGroupCount {
+    font-family: 'Fjalla One', sans-serif;
+    color: white;
+    vertical-align: bottom;
+    right: calc(100% + -30px);
+    transform: translateX(100%);
+    font-weight: bold;
+    letter-spacing: 1px;
+    z-index: 4;
+    position: relative;
+    text-shadow:
+        2px 2px 2px #000080, -2px -2px 2px #000080,
+        -2px 2px 2px #000080, 2px -2px 2px #000080,
+        2px 0px 2px #000080, -2px 0px 2px #000080,
+        0px 2px 2px #000080, 0px -2px 2px #000080;
+}
+
 #AGroupPercentage {
     font-family: 'Fjalla One', sans-serif;
     color: white;
@@ -281,6 +299,23 @@ body {
     right: -140px;
 }
 
+#BGroupCount {
+    font-family: 'Fjalla One', sans-serif;
+    color: white;
+    vertical-align: bottom;
+    left: calc(100% - 90px);
+    transform: translateX(-120%);
+    font-weight: bold;
+    letter-spacing: 1px;
+    z-index: 4;
+    position: relative;
+    text-shadow:
+        2px 2px 2px #8B0000, -2px -2px 2px #8B0000,
+        -2px 2px 2px #8B0000, 2px -2px 2px #8B0000,
+        2px 0px 2px #8B0000, -2px 0px 2px #8B0000,
+        0px 2px 2px #8B0000, 0px -2px 2px #8B0000;
+}
+
 #BGroupPercentage {
     font-family: 'Fjalla One', sans-serif;
     color: white;
@@ -304,22 +339,4 @@ body {
     position: absolute;
     top: 60px;
     right: 5px;
-}
-
-#AGroupCount {
-    color: white;
-    vertical-align: bottom;
-    right: calc(100% + -30px);
-    transform: translateX(100%);
-    font-weight: bold;
-    letter-spacing: 0px;
-}
-
-#BGroupCount {
-    color: white;
-    vertical-align: bottom;
-    left: calc(100% - 90px);
-    transform: translateX(-120%);
-    font-weight: bold;
-    letter-spacing: 0px;
 }
