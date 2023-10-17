@@ -103,135 +103,135 @@
         // // ----------------------------------------
         // // ▼ローカル動作用配列
         // // ----------------------------------------
-        // const data = [
-        //     { "stickers": "a1", "count(*)": "3", "url": "./img/a1.png" },
-        //     { "stickers": "a2", "count(*)": "7", "url": "./img/a2.png" },
-        //     { "stickers": "a3", "count(*)": "8", "url": "./img/a3.png" },
-        //     { "stickers": "a4", "count(*)": "0", "url": "./img/a4.png" },
-        //     { "stickers": "a5", "count(*)": "0", "url": "./img/a5.png" },
-        //     { "stickers": "a6", "count(*)": "0", "url": "./img/a6.png" },
-        //     { "stickers": "a7", "count(*)": "0", "url": "./img/a7.png" },
-        //     { "stickers": "a8", "count(*)": "0", "url": "./img/a8.png" },
-        //     { "stickers": "b1", "count(*)": "9", "url": "./img/b1.png" },
-        //     { "stickers": "b2", "count(*)": "7", "url": "./img/b2.png" },
-        //     { "stickers": "b3", "count(*)": "5", "url": "./img/b3.png" },
-        //     { "stickers": "b4", "count(*)": "0", "url": "./img/b4.png" },
-        //     { "stickers": "b5", "count(*)": "0", "url": "./img/b5.png" },
-        //     { "stickers": "b6", "count(*)": "0", "url": "./img/b6.png" },
-        //     { "stickers": "b7", "count(*)": "0", "url": "./img/b7.png" },
-        //     { "stickers": "b8", "count(*)": "0", "url": "./img/b8.png" },
-        // ];
+        const data = [
+            { "stickers": "a1", "count(*)": "3", "url": "./img/a1.png" },
+            { "stickers": "a2", "count(*)": "7", "url": "./img/a2.png" },
+            { "stickers": "a3", "count(*)": "8", "url": "./img/a3.png" },
+            { "stickers": "a4", "count(*)": "0", "url": "./img/a4.png" },
+            // { "stickers": "a5", "count(*)": "0", "url": "./img/a5.png" },
+            // { "stickers": "a6", "count(*)": "0", "url": "./img/a6.png" },
+            // { "stickers": "a7", "count(*)": "0", "url": "./img/a7.png" },
+            // { "stickers": "a8", "count(*)": "0", "url": "./img/a8.png" },
+            { "stickers": "b1", "count(*)": "9", "url": "./img/b1.png" },
+            { "stickers": "b2", "count(*)": "7", "url": "./img/b2.png" },
+            { "stickers": "b3", "count(*)": "5", "url": "./img/b3.png" },
+            { "stickers": "b4", "count(*)": "0", "url": "./img/b4.png" },
+            // { "stickers": "b5", "count(*)": "0", "url": "./img/b5.png" },
+            // { "stickers": "b6", "count(*)": "0", "url": "./img/b6.png" },
+            // { "stickers": "b7", "count(*)": "0", "url": "./img/b7.png" },
+            // { "stickers": "b8", "count(*)": "0", "url": "./img/b8.png" },
+        ];
 
-        // const getStickersCounter = async () => {
-        //     const code = data[0].Code;
-        //     // data 配列からランダムなインデックスを選びます。
-        //     const randomIndex = Math.floor(Math.random() * data.length);
-        //     const selectedItem = data[randomIndex];
-        //     const clickStamp = selectedItem.url;
-        //     const stampType = selectedItem.stickers;
-        //     if (['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'].includes(stampType)) {
-        //         AGroupCount += 1;
-        //     } else if (['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8'].includes(stampType)) {
-        //         BGroupCount += 1;
-        //     }
+        const getStickersCounter = async () => {
+            const code = data[0].Code;
+            // data 配列からランダムなインデックスを選びます。
+            const randomIndex = Math.floor(Math.random() * data.length);
+            const selectedItem = data[randomIndex];
+            const clickStamp = selectedItem.url;
+            const stampType = selectedItem.stickers;
+            if (['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'].includes(stampType)) {
+                AGroupCount += 1;
+            } else if (['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8'].includes(stampType)) {
+                BGroupCount += 1;
+            }
 
-        //     if (code === 3) {
-        //         console.log('データベース接続失敗');
-        //     } else {
-        //         const jsonData = data;
-        //         // console.log(jsonData);
-        //         drawImageOnCanvas(clickStamp, stampType);
-        //         calculatePercentage(AGroupCount, BGroupCount);
-        //         drawBarGraph(AGroupPercentage, BGroupPercentage);
-        //     }
-        // }
-        // setInterval(() => {
-        //     getStickersCounter();
-        // }, 500);
+            if (code === 3) {
+                console.log('データベース接続失敗');
+            } else {
+                const jsonData = data;
+                // console.log(jsonData);
+                drawImageOnCanvas(clickStamp, stampType);
+                calculatePercentage(AGroupCount, BGroupCount);
+                drawBarGraph(AGroupPercentage, BGroupPercentage);
+            }
+        }
+        setInterval(() => {
+            getStickersCounter();
+        }, 3000);
 
         //----------------------------------------
         // ▼サーバー接続用
         //----------------------------------------
-        let previousData = [];
+        // let previousData = [];
 
-        const getStickersCounter = async () => {
-            await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersResults.php")
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
+        // const getStickersCounter = async () => {
+        //     await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersResults.php")
+        //         .then((response) => response.json())
+        //         .then((data) => {
+        //             console.log(data);
 
-                    // 増えたスタンプの配列
-                    const increasedData = [];
+        //             // 増えたスタンプの配列
+        //             const increasedData = [];
 
-                    // 前回のデータがない場合、直接currentDataをpreviousDataに保存してreturn
-                    if (previousData.length === 0) {
-                        previousData = data;
-                        return; // この関数から出る
-                    }
+        //             // 前回のデータがない場合、直接currentDataをpreviousDataに保存してreturn
+        //             if (previousData.length === 0) {
+        //                 previousData = data;
+        //                 return; // この関数から出る
+        //             }
 
-                    data.forEach((currentData, index) => {
-                        if (previousData.length > index) {
-                            const diff = parseInt(currentData['count(*)']) - parseInt(previousData[index]['count(*)']);
-                            if (diff > 0) {
-                                increasedData.push({
-                                    stickers: currentData.stickers,
-                                    increaseCount: diff
-                                });
-                            }
-                        } else {
-                            // 前回のデータに存在しなかったstickerは全て新しいとみなす
-                            increasedData.push({
-                                stickers: currentData.stickers,
-                                increaseCount: parseInt(currentData['count(*)'])
-                            });
-                        }
-                    });
+        //             data.forEach((currentData, index) => {
+        //                 if (previousData.length > index) {
+        //                     const diff = parseInt(currentData['count(*)']) - parseInt(previousData[index]['count(*)']);
+        //                     if (diff > 0) {
+        //                         increasedData.push({
+        //                             stickers: currentData.stickers,
+        //                             increaseCount: diff
+        //                         });
+        //                     }
+        //                 } else {
+        //                     // 前回のデータに存在しなかったstickerは全て新しいとみなす
+        //                     increasedData.push({
+        //                         stickers: currentData.stickers,
+        //                         increaseCount: parseInt(currentData['count(*)'])
+        //                     });
+        //                 }
+        //             });
 
-                    // 新しいデータを前回のデータとして保存
-                    previousData = data;
+        //             // 新しいデータを前回のデータとして保存
+        //             previousData = data;
 
-                    console.log("increasedData", increasedData); // 増加したスティッカーの情報
+        //             console.log("increasedData", increasedData); // 増加したスティッカーの情報
 
-                    // 非同期処理が成功した場合
-                    const code = increasedData[0].Code;
-                    // console.log("data",data);            
+        //             // 非同期処理が成功した場合
+        //             const code = increasedData[0].Code;
+        //             // console.log("data",data);            
 
-                    for (let i = 0; i < increasedData.length; i++) {
-                        const selectedItem = increasedData[i];
-                        const stampType = selectedItem.stickers;
-                        // const clickStamp = dataImages[i].url;
-                        const clickStamp = getURLFromSticker(selectedItem.stickers);
+        //             for (let i = 0; i < increasedData.length; i++) {
+        //                 const selectedItem = increasedData[i];
+        //                 const stampType = selectedItem.stickers;
+        //                 // const clickStamp = dataImages[i].url;
+        //                 const clickStamp = getURLFromSticker(selectedItem.stickers);
 
-                        if (['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'].includes(stampType)) {
-                            AGroupCount += 1;
-                        } else if (['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8'].includes(stampType)) {
-                            BGroupCount += 1;
-                        }
+        //                 if (['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'].includes(stampType)) {
+        //                     AGroupCount += 1;
+        //                 } else if (['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8'].includes(stampType)) {
+        //                     BGroupCount += 1;
+        //                 }
 
-                        if (code === 3) {
+        //                 if (code === 3) {
 
-                        } else {
-                            const jsonData = increasedData;
-                            // console.log(jsonData);
-                            drawImageOnCanvas(clickStamp, stampType);
-                            calculatePercentage(AGroupCount, BGroupCount);
-                            drawBarGraph(AGroupPercentage, BGroupPercentage);
-                            // console.log(clickStamp, AGroupPercentage)
-                            // JSONデータ取得確認処理 ↓↓↓ 削除
-                            // const jsonDataString = JSON.stringify(jsonData);
-                            // const divObj = document.querySelector('div');
-                            // divObj.textContent = jsonDataString;
-                        }
-                    }
-                })
-                .catch((error) => {
-                    // 非同期処理が失敗した場合
-                })
-            // ここでdataを処理する
-        }
-        setInterval(() => {
-            getStickersCounter();
-        }, 1000);
+        //                 } else {
+        //                     const jsonData = increasedData;
+        //                     // console.log(jsonData);
+        //                     drawImageOnCanvas(clickStamp, stampType);
+        //                     calculatePercentage(AGroupCount, BGroupCount);
+        //                     drawBarGraph(AGroupPercentage, BGroupPercentage);
+        //                     // console.log(clickStamp, AGroupPercentage)
+        //                     // JSONデータ取得確認処理 ↓↓↓ 削除
+        //                     // const jsonDataString = JSON.stringify(jsonData);
+        //                     // const divObj = document.querySelector('div');
+        //                     // divObj.textContent = jsonDataString;
+        //                 }
+        //             }
+        //         })
+        //         .catch((error) => {
+        //             // 非同期処理が失敗した場合
+        //         })
+        //     // ここでdataを処理する
+        // }
+        // setInterval(() => {
+        //     getStickersCounter();
+        // }, 1000);
 
         //----------------------------------------
         // ▼パーセンテージのイーズインアニメーション
