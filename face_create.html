@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+    <!-- CSS & Tailwind -->
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/face.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <section id="header" class="bg-gray-200">
+        <div class="flex flex-col items-center justify-center px-3 pt-3 pb-3 mx-auto">
+            <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
+                <div class="p-3 space-y-4 md:space-y-6 sm:p-8">
+                    <div>
+                        <img class="w-full h-15 mr-2" src="./img/uretoru_logo.png" alt="logo" />
+                        <div class="text-center mt-4 mb-0 mx-0" id="contentDiv">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div id="face_create">
+
+        </div>
+    </section>
+
+
+
+    <section id="face_parts" class="bg-gray-200">
+        <div class="flex flex-col items-center justify-center px-3 pt-3 pb-3 mx-auto">
+            <div class="w-full bg-white rounded-lg shadow sm:max-w-3xl md:w-4/5 xl:p-0">
+                <div class="p-3 flex flex-wrap" id="parts">
+                    <img src="/img/face/base.png">
+                    <img src="/img/face/eye01.png">
+                    <img src="/img/face/eye02.png">
+                    <img src="/img/face/eye03.png">
+                    <img src="/img/face/nose01.png">
+                    <img src="/img/face/nose02.png">
+                    <img src="/img/face/nose03.png">
+                    <img src="/img/face/mouth01.png">
+                    <img src="/img/face/mouth02.png">
+                    <img src="/img/face/mouth03.png">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="flex justify-center itemsnter">
+            <button id="moveUp">↑</button>
+            <button id="moveLeft">←</button>
+            <button id="moveRight">→</button>
+            <button id="moveDown">↓</button>
+            <button id="downloadButton">ダウンロード</button>
+        </div>
+    </section>
+
+
+    <script>
+
+        //----------------------------------------
+        // ▼ 十字ボタンの関数
+        //----------------------------------------
+        // 上下左右ボタンのイベント
+        document.getElementById('moveUp').addEventListener('click', () => moveImage('up'));
+        document.getElementById('moveDown').addEventListener('click', () => moveImage('down'));
+        document.getElementById('moveLeft').addEventListener('click', () => moveImage('left'));
+        document.getElementById('moveRight').addEventListener('click', () => moveImage('right'));
+
+        function moveImage(direction) {
+            const lastImage = faceCreate.lastChild;
+            if (!lastImage || lastImage.tagName !== 'IMG') return; // 画像がない場合は処理を終了
+
+            // 位置を取得（初めて移動する場合は0を設定）
+            const top = parseInt(lastImage.style.top || 0);
+            const left = parseInt(lastImage.style.left || 0);
+
+            // 指定された方向に移動
+            switch (direction) {
+                case 'up':
+                    lastImage.style.top = (top - 1) + 'px';
+                    break;
+                case 'down':
+                    lastImage.style.top = (top + 1) + 'px';
+                    break;
+                case 'left':
+                    lastImage.style.left = (left - 1) + 'px';
+                    break;
+                case 'right':
+                    lastImage.style.left = (left + 1) + 'px';
+                    break;
+            }
+        }
+        //----------------------------------------
+        // ▼ 顔のパーツを作る関数
+        //----------------------------------------
+        const addNewImageToFaceCreate = (clickedElement) => {
+            const newImage = clickedElement.cloneNode();
+            newImage.style.opacity = '1.0';
+
+            if (clickedElement.getAttribute('src').includes('/face/base.png')) {
+                // base.png がクリックされた場合、最初の子要素として追加
+                faceCreate.insertBefore(newImage, faceCreate.firstChild);
+            } else {
+                faceCreate.appendChild(newImage);
+            }
+        };
+
+        //----------------------------------------
+        // ▼ クリックしたときのまとめ関数
+        //----------------------------------------
+        const faceParts = document.getElementById('parts');
+        const faceCreate = document.getElementById('face_create');
+
+        faceParts.addEventListener('click', (event) => {
+            if (event.target.tagName === 'IMG') {
+                const clickedImgSrc = event.target.getAttribute('src');
+
+                // 既存の同カテゴリの画像をfaceCreateエリアから削除
+                removeExistingImage(clickedImgSrc);
+
+                // 新しい画像をfaceCreateエリアに追加
+                addNewImageToFaceCreate(event.target);
+
+                // 他の関連する画像をグレーアウトする
+                toggleRelatedImages(clickedImgSrc);
+            }
+        });
+
+        //----------------------------------------
+        // ▼ 既存の同カテゴリの画像をfaceCreateエリアから削除する関数
+        //----------------------------------------
+        const removeExistingImage = (src) => {
+            const baseName = src.split('/').pop().split('.')[0];
+
+            const category = baseName.slice(0, -2);
+            const existingImg = faceCreate.querySelector(`img[src^="/img/face/${category}"]`);
+            if (existingImg) existingImg.remove();
+        };
+
+
+        //----------------------------------------
+        // ▼ 他の関連する画像をグレーアウトする関数
+        //----------------------------------------
+        const toggleRelatedImages = (src) => {
+            const baseName = src.split('/').pop().split('.')[0];
+            const category = baseName.slice(0, -2);
+
+            faceParts.querySelectorAll(`img[src^="/img/face/${category}"]`).forEach(img => {
+                if (img.getAttribute('src') !== src) {
+                    img.style.opacity = '0.2';
+                } else {
+                    img.style.opacity = '1.0';
+                }
+            });
+        };
+
+        //----------------------------------------
+        // ▼ 顔の画像をダウンロード可能にする関数
+        //----------------------------------------
+        const downloadMergedImage = () => {
+            const faceCreate = document.getElementById('face_create');
+            const images = faceCreate.querySelectorAll('img');
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 200; // 画像の幅
+            canvas.height = 200; // 画像の高さ
+            const ctx = canvas.getContext('2d');
+
+            let imagesLoaded = 0;
+
+            images.forEach(img => {
+                const newImg = document.createElement('img');
+                newImg.src = img.src;
+                newImg.onload = function () {
+                    ctx.drawImage(newImg, 0, 0, 200, 200);
+                    imagesLoaded++;
+                    if (imagesLoaded === images.length) {
+                        const downloadLink = document.createElement('a');
+                        downloadLink.href = canvas.toDataURL('image/png');
+                        downloadLink.download = 'merged_face.png';
+                        downloadLink.click();
+                    }
+                };
+            });
+        }
+
+        // この関数をダウンロードボタンのクリックイベントに紐付ける
+        const downloadButton = document.getElementById('downloadButton');
+        if (downloadButton) {
+            downloadButton.addEventListener('click', downloadMergedImage);
+        }
+
+    </script>
+</body>
+
+</html>

@@ -67,8 +67,8 @@ const executeActionsForStatus1 = () => {
 
                 </div>
             </div>
-            
         </div>
+
         <div class="flex flex-col items-center mt-2">
             <div class="my-2">
                 <img src="./img/station_logo.png" alt="logo" class="w-32 h-auto" />
