@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="./css/face.css" />
     <script src="https://cdn.tailwindcss.com"></script>
 
+
+
     <title>Document</title>
 </head>
 
@@ -32,7 +34,6 @@
 
     <section>
         <div id="face_create">
-
         </div>
     </section>
 
@@ -67,6 +68,10 @@
         </div>
     </section>
 
+    <!-- JavaScript -->
+    <script type="module" src="./js/action.js">
+        import { addClickEventToImages } from './js/action.js';
+    </script>
 
     <script>
 
@@ -109,6 +114,7 @@
         const addNewImageToFaceCreate = (clickedElement) => {
             const newImage = clickedElement.cloneNode();
             newImage.style.opacity = '1.0';
+            newImage.classList.add('image');
 
             if (clickedElement.getAttribute('src').includes('/face/base.png')) {
                 // base.png がクリックされた場合、最初の子要素として追加
@@ -116,6 +122,8 @@
             } else {
                 faceCreate.appendChild(newImage);
             }
+
+            addClickEventToImages();
         };
 
         //----------------------------------------
