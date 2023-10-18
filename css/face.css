@@ -24,16 +24,3 @@
 /************************** 
 上下左右ボタンの装飾
 ***************************/
-#moveUp,
-#moveLeft,
-#moveRight,
-#moveDown {
-    font-size: 30px;
-    width: 80px;
-    height: 80px;
-    border-radius: 15px;
-    /* 半分のサイズで完全に角丸になります */
-    text-align: center;
-    line-height: 30px;
-    /* ボタンの高さと同じでテキストを中央に配置 */
-}
