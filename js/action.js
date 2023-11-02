@@ -532,7 +532,7 @@ const displayImageInSlot = (id, circleSize) => {
 //----------------------------------------
 // ボタンを押した時の関数
 //----------------------------------------
-export const addClickEventToImages = () => {
+const addClickEventToImages = () => {
     const elements = document.querySelectorAll('.image');
     elements.forEach(element => {
         element.addEventListener('click', () => handleClickOnImage(element));
