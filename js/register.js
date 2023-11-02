@@ -25,30 +25,30 @@ const executeActionsForStatus1 = () => {
     targetDiv.innerHTML = `
                 <div class="text-left mb-1">
                     <p class="text-lg mb-2">
-                        ⭐️Aマサル/B伊藤舞スタンプで応援
+                    ⭐️ドラッグアンドドロップでスタンプを入れ替えられます
                     </p>
                     <p class="text-lg mb-2">
-                    ⭐️スタンプがテレビに飛んでいくよ
+                    ⭐️長押しでスタンプを登録できます
                     </p>
-                    <p class="text-lg mb-2">
-                    ⭐️音声が出ます♪
-                    </p>
+
                 </div>            
             `;
 
     const stampWrapper = document.getElementById('stampWrapper');
     stampWrapper.innerHTML = `
         <div id="stampListContainer" class="stampContainer">
-            <div class="image-wrapper"><img class="image" src="./img/a1.png" data-id="a1"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a2.png" data-id="a2"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b1.png" data-id="b1"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b2.png" data-id="b2"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a3.png" data-id="a3"></div>
-            <div class="image-wrapper"><img class="image" src="./img/a4.png" data-id="a4"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b3.png" data-id="b3"></div>
-            <div class="image-wrapper"><img class="image" src="./img/b4.png" data-id="b4"></div>
+            <div class="image-wrapper" draggable="true"><img class="image" src="./img/a1.png" data-id="a1"></div>
+            <div class="image-wrapper" draggable="true"><img class="image" src="./img/a2.png" data-id="a2"></div>
+            <div class="image-wrapper" draggable="true"><img class="image" src="./img/b1.png" data-id="b1"></div>
+            <div class="image-wrapper" draggable="true"><img class="image" src="./img/b2.png" data-id="b2"></div>
+            <div class="image-wrapper" draggable="true"><img class="image" src="./img/a3.png" data-id="a3"></div>
+            <div class="image-wrapper" draggable="true"><img class="image" src="./img/a4.png" data-id="a4"></div>
+            <div class="image-wrapper" draggable="true"><img class="image" src="./img/b3.png" data-id="b3"></div>
+            <div class="image-wrapper" draggable="true"><img class="image" src="./img/b4.png" data-id="b4"></div>
         </div>
         `;
+
+    initializeDragAndDrop(stampWrapper);
 
     const stampCountWrapper = document.getElementById('stampCountWrapper');
     stampCountWrapper.innerHTML = `
@@ -97,9 +97,9 @@ const executeActionsForStatus1 = () => {
     // console.log(currentCount);
 
     // console.log(currentCount);
-    if (currentCount >= 3) {
-        addNeverClickableClass();
-    }
+    // if (currentCount >= 3) {
+    //     addNeverClickableClass();
+    // }
 
     // ページの読み込み時にも調整
     // window.addEventListener('resize', adjustDottedCircleSize);
@@ -321,6 +321,41 @@ const playSound = (id) => {
 };
 
 //----------------------------------------
+// ▼スタンプを入れ替える関数
+//----------------------------------------
+const initializeDragAndDrop = (stampWrapper) => {
+    let draggedElement = null;
+
+    stampWrapper.addEventListener('dragstart', (e) => {
+        draggedElement = e.target;
+        // console.log('dragstart イベントが発火しました。', draggedElement);
+    });
+
+    stampWrapper.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    stampWrapper.addEventListener('drop', (e) => {
+        e.preventDefault();
+
+        let dropTarget = e.target;
+
+        // もしドロップターゲットがimageであれば、その親のimage-wrapperをターゲットとする
+        if (dropTarget.tagName === 'IMG') {
+            dropTarget = dropTarget.parentElement;
+        }
+
+        // ターゲットがimage-wrapperであり、かつdraggedElementが有効な場合のみ処理を行う
+        if (dropTarget.classList.contains('image-wrapper') && draggedElement) {
+            // srcの入れ替え
+            const temp = draggedElement.src;
+            console.log(temp);
+            draggedElement.src = dropTarget.querySelector('.image').src;
+            dropTarget.querySelector('.image').src = temp;
+        }
+    });
+}
+//----------------------------------------
 // ▼スタンプをクリックしたときの関数
 //----------------------------------------
 
@@ -355,11 +390,12 @@ const handleClickOnImage = (element) => {
     //----------------------------------------
 
     let currentCount = getCurrentCount();
-    // console.log(currentCount);
+    console.log(currentCount);
 
-    if (currentCount >= 2) {
-        addNeverClickableClass();
-    }
+    // ３回しかクリックできない
+    // if (currentCount >= 2) {
+    //     addNeverClickableClass();
+    // }
 
     element.classList.add('clicked-image'); // クリックされたら 'clicked-image' クラスを追加
     isClickDisabled = true; // クリックを無効化
@@ -564,7 +600,7 @@ const stickers = async (param, element) => {
     code = 1;
     switch (code) {
         case 1:
-            // console.log('データ登録成功');
+            console.log('データ登録成功');
             setTimeout(() => {
                 removeClickedImageAndEnableClick(element);
             }, 1000);
@@ -578,7 +614,7 @@ const stickers = async (param, element) => {
         default:
             break;
     }
-    // console.log(param)
+
     // })
     // .catch((error) => {
     //     // 非同期処理が失敗した場合
