@@ -570,10 +570,10 @@ const stickers = async (param, element) => {
             }, 1000);
             break;
         case 2:
-            console.log('データ登録失敗');
+            // console.log('データ登録失敗');
             break;
         case 3:
-            console.log('データベース接続失敗');
+            // console.log('データベース接続失敗');
             break;
         default:
             break;
