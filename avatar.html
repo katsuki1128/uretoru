@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+    <!-- CSS & Tailwind -->
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>アバター生成</title>
+</head>
+
+<body>
+    <section id="header" class="bg-gray-200"></section>
+    <section id="camera" class="bg-gray-200">
+        <!-- カメラボタンの追加 -->
+        <button id="cameraButton">カメラを起動</button>
+        <!-- カメラ停止ボタンの追加 -->
+        <button id="stopCameraButton">カメラを停止</button>
+        <!-- 撮影ボタンの追加 -->
+        <button id="captureButton">撮影</button>
+        <!-- 保存ボタンの追加 -->
+        <button id="saveButton" style="display:none;">保存</button>
+        <!-- ビデオ要素の追加 -->
+        <video id="cameraStream" width="640" height="480" autoplay></video>
+        <!-- 撮影した画像を表示するための要素 -->
+        <img id="capturedImage" style="display:none;">
+    </section>
+    <section id="stampWrapper"></section>
+    <section id="stampCountWrapper" class="bg-gray-200"></section>
+
+
+    <script>
+        // カメラボタンの要素を取得
+        const cameraButton = document.getElementById('cameraButton');
+        const stopCameraButton = document.getElementById('stopCameraButton');
+        const captureButton = document.getElementById('captureButton');
+        const saveButton = document.getElementById('saveButton');
+        const cameraStream = document.getElementById('cameraStream');
+        const capturedImage = document.getElementById('capturedImage');
+        let stream = null;
+
+
+        // カメラを起動する関数
+        const startCamera = () => {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then((mediaStream) => {
+                    stream = mediaStream;
+                    cameraStream.srcObject = mediaStream;
+                    cameraStream.play();
+
+                    // ここにカメラストリームを処理するコードを追加
+                    // console.log("カメラが起動しました");
+                })
+                .catch((error) => {
+                    console.error("カメラの起動に失敗しました:", error);
+                });
+        }
+        const stopCamera = () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                cameraStream.srcObject = null;
+            }
+        }
+        const captureImage = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = cameraStream.videoWidth;
+            canvas.height = cameraStream.videoHeight;
+            canvas.getContext('2d').drawImage(cameraStream, 0, 0, canvas.width, canvas.height);
+            capturedImage.src = canvas.toDataURL('image/png');
+            capturedImage.style.display = 'block';
+            saveButton.style.display = 'block';
+        }
+
+        const saveImage = () => {
+            const a = document.createElement('a');
+            a.href = capturedImage.src;
+            a.download = 'captured-image.png'; // ファイル名を設定
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+        cameraButton.addEventListener('click', startCamera);
+        stopCameraButton.addEventListener('click', stopCamera);
+        captureButton.addEventListener('click', captureImage);
+        saveButton.addEventListener('click', saveImage);
+    </script>
+    <script src="./js/avatar.js"></script>
+</body>
+
+</html>
