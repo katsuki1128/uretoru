@@ -163,6 +163,14 @@
                     // 増えたスタンプの配列
                     const increasedData = [];
 
+                    // previousDataから特定のstickersのcount(*)を取得する関数
+                    const getPreviousCount = (stickers) => {
+                        const found = previousData.find(pd => pd.stickers === stickers);
+                        console.log(found);
+                        return found ? parseInt(found['count(*)']) : 0;
+
+                    };
+
                     // 前回のデータがない場合、直接currentDataをpreviousDataに保存してreturn
                     if (previousData.length === 0) {
                         previousData = data;
@@ -173,29 +181,44 @@
                     // console.log("(currentData['count(*)'])", (currentData['count(*)']))
                     // console.log("currentData", currentData)
 
-                    data.forEach((currentData, index) => {
-                        if (previousData.length > index) {
-                            const diff = parseInt(currentData['count(*)']) - parseInt(previousData[index]['count(*)']);
-                            // console.log("currentData", index, currentData)
-                            // console.log("(currentData['count(*)'])", (currentData['count(*)']))
-                            // console.log("(previousData[index]['count(*)'])", (previousData[index]['count(*)']))
-                            console.log(index, diff);
-                            if (diff > 0) {
-                                increasedData.push({
-                                    stickers: currentData.stickers,
-                                    increaseCount: diff
-                                });
-                                console.log("diff > 0")
-                            }
-                        } else {
-                            // 前回のデータに存在しなかったstickerは全て新しいとみなす
+                    data.forEach(currentData => {
+                        const currentCount = parseInt(currentData['count(*)']);
+                        const previousCount = getPreviousCount(currentData.stickers);
+                        console.log(currentCount, previousCount);
+
+                        const diff = currentCount - previousCount;
+
+                        if (diff > 0 || previousCount === 0) {
+                            // stickersが同じものが増えた場合、または新たなstickersが増えた場合
                             increasedData.push({
                                 stickers: currentData.stickers,
-                                increaseCount: parseInt(currentData['count(*)'])
+                                increaseCount: diff > 0 ? diff : currentCount
                             });
-
                         }
                     });
+                    // data.forEach((currentData, index) => {
+                    //     if (previousData.length > index) {
+                    //         const diff = parseInt(currentData['count(*)']) - parseInt(previousData[index]['count(*)']);
+                    //         // console.log("currentData", index, currentData)
+                    //         // console.log("(currentData['count(*)'])", (currentData['count(*)']))
+                    //         // console.log("(previousData[index]['count(*)'])", (previousData[index]['count(*)']))
+                    //         console.log(index, diff);
+                    //         if (diff > 0) {
+                    //             increasedData.push({
+                    //                 stickers: currentData.stickers,
+                    //                 increaseCount: diff
+                    //             });
+                    //             console.log("diff > 0")
+                    //         }
+                    //     } else {
+                    //         // 前回のデータに存在しなかったstickerは全て新しいとみなす
+                    //         increasedData.push({
+                    //             stickers: currentData.stickers,
+                    //             increaseCount: parseInt(currentData['count(*)'])
+                    //         });
+
+                    //     }
+                    // });
 
                     // 新しいデータを前回のデータとして保存
                     previousData = data;
@@ -211,7 +234,7 @@
                         const stampType = selectedItem.stickers;
                         // const clickStamp = dataImages[i].url;
                         const clickStamp = getURLFromSticker(selectedItem.stickers);
-                        console.log(stampType);
+                        // console.log(stampType);
 
                         if (['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'].includes(stampType)) {
                             AGroupCount += 1;
