@@ -74,18 +74,18 @@
 
         function getURLFromSticker(sticker) {
             const mappings = {
-                'a1': './img/a1.png',
-                'a2': './img/a2.png',
-                'a3': './img/a3.png',
-                'a4': './img/a4.png',
+                'a1': './img/temporary/2023_12/a1_2023_12.png',
+                'a2': './img/temporary/2023_12/a2_2023_12.png',
+                'a3': './img/temporary/2023_12/a3_2023_12.png',
+                'a4': './img/temporary/2023_12/a4_2023_12.png',
                 'a5': './img/a5.png',
                 'a6': './img/a6.png',
                 'a7': './img/a7.png',
                 'a8': './img/a8.png',
-                'b1': './img/b1.png',
-                'b2': './img/b2.png',
-                'b3': './img/b3.png',
-                'b4': './img/b4.png',
+                'b1': './img/temporary/2023_12/b1_2023_12.png',
+                'b2': './img/temporary/2023_12/b2_2023_12.png',
+                'b3': './img/temporary/2023_12/b3_2023_12.png',
+                'b4': './img/temporary/2023_12/b4_2023_12.png',
                 'b5': './img/b5.png',
                 'b6': './img/b6.png',
                 'b7': './img/b7.png',
@@ -150,117 +150,118 @@
         // }, 500);
 
         //----------------------------------------
+        // ▼ローカル接続用
+        //----------------------------------------
+        const data = [
+            { "stickers": "a1", "count(*)": 0 },
+            { "stickers": "a2", "count(*)": 0 },
+            { "stickers": "a3", "count(*)": 0 },
+            { "stickers": "a4", "count(*)": 0 },
+            { "stickers": "b1", "count(*)": 0 },
+            { "stickers": "b2", "count(*)": 0 },
+            { "stickers": "b3", "count(*)": 0 },
+            { "stickers": "b4", "count(*)": 0 },
+        ];
+
+        setInterval(() => {
+            const randomIndex = Math.floor(Math.random() * 8);
+            data[randomIndex]["count(*)"] += 1;
+        }, 1000);
+
+        //----------------------------------------
         // ▼サーバー接続用
         //----------------------------------------
         let previousData = [];
-
         const getStickersCounter = async () => {
-            await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersResults.php")
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
+            // await fetch("https://santaclaus.fbs.co.jp/assets/lib/MentaiStickersResults.php")
+            //     .then((response) => response.json())
+            //     .then((data) => {
 
-                    // 増えたスタンプの配列
-                    const increasedData = [];
+            let output = "";
+            data.forEach((item) => {
+                output += item["count(*)"] + " ";
+            });
+            console.log(output);
+            console.log("通過１")
+            // 増えたスタンプの配列
+            const increasedData = [];
 
-                    // previousDataから特定のstickersのcount(*)を取得する関数
-                    const getPreviousCount = (stickers) => {
-                        const found = previousData.find(pd => pd.stickers === stickers);
-                        console.log(found);
-                        return found ? parseInt(found['count(*)']) : 0;
+            // previousDataから特定のstickersのcount(*)を取得する関数
+            const getPreviousCount = (stickers) => {
+                const found = previousData.find(pd => pd.stickers === stickers);
+                // console.log(found);
+                return found ? parseInt(found['count(*)']) : 0;
+            };
 
-                    };
+            // 前回のデータがない場合、直接currentDataをpreviousDataに保存してreturn
+            if (previousData.length === 0) {
+                // previousData = data;
+                previousData = data.map(item => ({ ...item, 'count(*)': 0 }));
+                console.log("通過２")
+                // previousData = JSON.parse(JSON.stringify(data));
+                return; // この関数から出る
+            }
 
-                    // 前回のデータがない場合、直接currentDataをpreviousDataに保存してreturn
-                    if (previousData.length === 0) {
-                        previousData = data;
-                        return; // この関数から出る
-                    }
+            data.forEach(currentData => {
+                const currentCount = parseInt(currentData['count(*)']);
+                const previousCount = getPreviousCount(currentData.stickers);
 
-                    // console.log("previousData", previousData);
-                    // console.log("(currentData['count(*)'])", (currentData['count(*)']))
-                    // console.log("currentData", currentData)
+                const diff = currentCount - previousCount;
+                console.log(currentCount, previousCount);
 
-                    data.forEach(currentData => {
-                        const currentCount = parseInt(currentData['count(*)']);
-                        const previousCount = getPreviousCount(currentData.stickers);
-                        console.log(currentCount, previousCount);
-
-                        const diff = currentCount - previousCount;
-
-                        if (diff > 0 || previousCount === 0) {
-                            // stickersが同じものが増えた場合、または新たなstickersが増えた場合
-                            increasedData.push({
-                                stickers: currentData.stickers,
-                                increaseCount: diff > 0 ? diff : currentCount
-                            });
-                        }
+                if (diff > 0) {
+                    // stickersが同じものが増えた場合、または新たなstickersが増えた場合
+                    increasedData.push({
+                        stickers: currentData.stickers,
+                        increaseCount: diff
                     });
-                    // data.forEach((currentData, index) => {
-                    //     if (previousData.length > index) {
-                    //         const diff = parseInt(currentData['count(*)']) - parseInt(previousData[index]['count(*)']);
-                    //         // console.log("currentData", index, currentData)
-                    //         // console.log("(currentData['count(*)'])", (currentData['count(*)']))
-                    //         // console.log("(previousData[index]['count(*)'])", (previousData[index]['count(*)']))
-                    //         console.log(index, diff);
-                    //         if (diff > 0) {
-                    //             increasedData.push({
-                    //                 stickers: currentData.stickers,
-                    //                 increaseCount: diff
-                    //             });
-                    //             console.log("diff > 0")
-                    //         }
-                    //     } else {
-                    //         // 前回のデータに存在しなかったstickerは全て新しいとみなす
-                    //         increasedData.push({
-                    //             stickers: currentData.stickers,
-                    //             increaseCount: parseInt(currentData['count(*)'])
-                    //         });
+                }
+            });
 
-                    //     }
-                    // });
+            // 新しいデータを前回のデータとして保存
+            // previousData = data;
+            previousData = data.map(item => ({ ...item }));
+            // previousData = JSON.parse(JSON.stringify(data));
 
-                    // 新しいデータを前回のデータとして保存
-                    previousData = data;
+            // console.log("increasedData", increasedData); // 増加したスティッカーの情報
 
-                    // console.log("increasedData", increasedData); // 増加したスティッカーの情報
+            // 非同期処理が成功した場合
+            const code = 1;
+            // const code = increasedData[0].Code;
+            // console.log("data",data);            
 
-                    // 非同期処理が成功した場合
-                    const code = increasedData[0].Code;
-                    // console.log("data",data);            
+            for (let i = 0; i < increasedData.length; i++) {
+                const selectedItem = increasedData[i];
+                const stampType = selectedItem.stickers;
+                // const clickStamp = dataImages[i].url;
+                const clickStamp = getURLFromSticker(selectedItem.stickers);
+                // console.log(stampType);
 
-                    for (let i = 0; i < increasedData.length; i++) {
-                        const selectedItem = increasedData[i];
-                        const stampType = selectedItem.stickers;
-                        // const clickStamp = dataImages[i].url;
-                        const clickStamp = getURLFromSticker(selectedItem.stickers);
-                        // console.log(stampType);
+                if (['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'].includes(stampType)) {
+                    AGroupCount += selectedItem.increaseCount;
+                } else if (['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8'].includes(stampType)) {
+                    BGroupCount += selectedItem.increaseCount;
+                }
 
-                        if (['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'].includes(stampType)) {
-                            AGroupCount += 1;
-                        } else if (['b1', 'b2', 'b3', 'b4', 'b5', 'b6', 'b7', 'b8'].includes(stampType)) {
-                            BGroupCount += 1;
-                        }
+                if (code === 3) {
 
-                        if (code === 3) {
-
-                        } else {
-                            const jsonData = increasedData;
-                            // console.log(jsonData);
-                            drawImageOnCanvas(clickStamp, stampType);
-                            calculatePercentage(AGroupCount, BGroupCount);
-                            drawBarGraph(AGroupPercentage, BGroupPercentage);
-                            // console.log(clickStamp, AGroupPercentage)
-                            // JSONデータ取得確認処理 ↓↓↓ 削除
-                            // const jsonDataString = JSON.stringify(jsonData);
-                            // const divObj = document.querySelector('div');
-                            // divObj.textContent = jsonDataString;
-                        }
-                    }
-                })
-                .catch((error) => {
-                    // 非同期処理が失敗した場合
-                })
+                } else {
+                    const jsonData = increasedData;
+                    // console.log(jsonData);
+                    drawImageOnCanvas(clickStamp, stampType);
+                    calculatePercentage(AGroupCount, BGroupCount);
+                    drawBarGraph(AGroupPercentage, BGroupPercentage);
+                    // console.log(clickStamp, AGroupPercentage)
+                    // JSONデータ取得確認処理 ↓↓↓ 削除
+                    // const jsonDataString = JSON.stringify(jsonData);
+                    // const divObj = document.querySelector('div');
+                    // divObj.textContent = jsonDataString;
+                }
+            }
+            // })
+            // .catch((error) => {
+            //     // 非同期処理が失敗した場合
+            // })
             // ここでdataを処理する
         }
         setInterval(() => {
